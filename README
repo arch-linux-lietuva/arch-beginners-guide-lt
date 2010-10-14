@@ -7,30 +7,82 @@ Turinys:
 	- About This Guide
 - Part 1: Install the Base System
 	- Step 1: Obtain the latest Installation media
+		- Install from an Existing GNU/Linux Distro
+		- CD installer
+		- Flash Memory Device or USB stick
 	- Step 2: Boot Arch Linux Installer
+		- Changing the keymap
+		- Documentation
 	- Step 3: Start the Installation
 	- A: Select an installation source
+		- Configure Network
 	- B: Set Clock
 	- C: Prepare Hard Drive
+		- Partition Hard Drives
+		- Set Filesystem Mountpoints
 	- D: Select Packages
 	- E: Install Packages
 	- F: Configure the System
+		- Can the installer handle this more automatically ?
+		- /etc/rc.conf
+		- /etc/fstab
+		- /etc/mkinitcpio.conf
+		- /etc/modprobe.d/modprobe.conf
+		- /etc/resolv.conf
+		- /etc/hosts
+		- /etc/hosts.deny and /etc/hosts.allow
+		- /etc/locale.gen
+		- Pacman-Mirror
+		- Root password
 	- G: Install Bootloader
+		- Grub
 	- H: Reboot
 - Part 2: Configure & Update the New Arch Linux base system
 	- Step 1: Configuring the network
+		- Wired LAN
+		- Wireless LAN
+		- Proxy Server
+		- Analog Modem
+		- ISDN
+		- DSL (PPPoE)
 	- Step 2: Update, Sync, and Upgrade the system with pacman
+		- What is pacman ?
+		- Package Repositories
+		- /etc/pacman.conf
+		- /etc/pacman.d/mirrorlist
+		- Mirrorcheck for up-to-date packages
+		- Ignoring Configuration Files
+		- Get familiar with pacman
 	- Step 3: Update System
+		- The Arch rolling release model
+		- Network Time Protocol
 	- Step 4: Add a user and setup groups
 	- Step 5: Install and setup Sudo (Optional)
 - Part 3: Install X and configure ALSA
 	- Step 1: Configure sound with alsamixer
+		- Sound test
+		- Saving the Sound Settings
 	- Step 2: Install X
+		- A: The X-Files
+		- B: Install Video Driver Package
+		- C: Install Input Driver Packages
 	- Step 3: Configure X
+		- A: Introduction to the config file: xorg.conf
+		- B: Input hotplugging
+		- C: Test X
 - Part 4: Installing and configuring a Desktop Environment
 	- Step 1: Install Fonts
 	- Step 2: Install a Desktop Environment
+		- GNOME
+		- KDE
+		- Xfce
+		- LXDE
+		- *box
+		- FVWM2
+		- Tiling WMs
 	- Step 3: Methods for starting your Dekstop Environment
+		- A: Manually
+		- B: Automatically
 - Multimedia
 	- Use 32bit programs on 64bit systems
 	- Codecs, plugins and Java
