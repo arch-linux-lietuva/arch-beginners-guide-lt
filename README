@@ -1,19 +1,19 @@
 Turinys:
 
-- Preface
-	- Introduction
-	- License
-	- The Arch Way
-	- About This Guide
-- Part 1: Install the Base System
-	- Step 1: Obtain the latest Installation media
-		- Install from an Existing GNU/Linux Distro
-		- CD installer
-		- Flash Memory Device or USB stick
-	- Step 2: Boot Arch Linux Installer
+- Įvadas
+	- Įžanga
+	- Licencija
+	- Arch būdas
+	- Apie šitą vadovą
+- 1 Dalis: Pagrindinės sistemos įdiegimas
+	- 1 Žingsnis: Gaukite naujausią įdiegimo šaltinį
+		- Įdiegimas iš egzistuojančios GNU/Linux distribucijos
+		- Įdiegimas iš CD
+		- Įdiegimas iš Flash laikmenos
+	- 2 Žingsnis: Pakraukite Arch Linux diegyklę
 		- Changing the keymap
 		- Documentation
-	- Step 3: Start the Installation
+	- 3 Žingsnis: Pradėkite diegimą
 	- A: Select an installation source
 		- Configure Network
 	- B: Set Clock
@@ -37,15 +37,15 @@ Turinys:
 	- G: Install Bootloader
 		- Grub
 	- H: Reboot
-- Part 2: Configure & Update the New Arch Linux base system
-	- Step 1: Configuring the network
+- 2 Dalis: Sukonfigūruokite ir atnaujinkite Arch Linux pagrindinę sistemą
+	- 1 žingsnis: Configuring the network
 		- Wired LAN
 		- Wireless LAN
 		- Proxy Server
 		- Analog Modem
 		- ISDN
 		- DSL (PPPoE)
-	- Step 2: Update, Sync, and Upgrade the system with pacman
+	- 2 žingsnis: Update, Sync, and Upgrade the system with pacman
 		- What is pacman ?
 		- Package Repositories
 		- /etc/pacman.conf
@@ -53,12 +53,12 @@ Turinys:
 		- Mirrorcheck for up-to-date packages
 		- Ignoring Configuration Files
 		- Get familiar with pacman
-	- Step 3: Update System
+	- 3 žingsnis: Update System
 		- The Arch rolling release model
 		- Network Time Protocol
 	- Step 4: Add a user and setup groups
 	- Step 5: Install and setup Sudo (Optional)
-- Part 3: Install X and configure ALSA
+- 3 Dalis: X įdiegimas ir ALSA konfigūravimas
 	- Step 1: Configure sound with alsamixer
 		- Sound test
 		- Saving the Sound Settings
@@ -70,7 +70,7 @@ Turinys:
 		- A: Introduction to the config file: xorg.conf
 		- B: Input hotplugging
 		- C: Test X
-- Part 4: Installing and configuring a Desktop Environment
+- 4 Dalis: Installing and configuring a Desktop Environment
 	- Step 1: Install Fonts
 	- Step 2: Install a Desktop Environment
 		- GNOME
@@ -83,7 +83,7 @@ Turinys:
 	- Step 3: Methods for starting your Dekstop Environment
 		- A: Manually
 		- B: Automatically
-- Multimedia
+- Daugialypė terpę
 	- Use 32bit programs on 64bit systems
 	- Codecs, plugins and Java
-- Appendix
+- Priedėlis
