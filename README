@@ -1,0 +1,37 @@
+Turinys:
+
+- Preface
+	- Introduction
+	- License
+	- The Arch Way
+	- About This Guide
+- Part 1: Install the Base System
+	- Step 1: Obtain the latest Installation media
+	- Step 2: Boot Arch Linux Installer
+	- Step 3: Start the Installation
+	- A: Select an installation source
+	- B: Set Clock
+	- C: Prepare Hard Drive
+	- D: Select Packages
+	- E: Install Packages
+	- F: Configure the System
+	- G: Install Bootloader
+	- H: Reboot
+- Part 2: Configure & Update the New Arch Linux base system
+	- Step 1: Configuring the network
+	- Step 2: Update, Sync, and Upgrade the system with pacman
+	- Step 3: Update System
+	- Step 4: Add a user and setup groups
+	- Step 5: Install and setup Sudo (Optional)
+- Part 3: Install X and configure ALSA
+	- Step 1: Configure sound with alsamixer
+	- Step 2: Install X
+	- Step 3: Configure X
+- Part 4: Installing and configuring a Desktop Environment
+	- Step 1: Install Fonts
+	- Step 2: Install a Desktop Environment
+	- Step 3: Methods for starting your Dekstop Environment
+- Multimedia
+	- Use 32bit programs on 64bit systems
+	- Codecs, plugins and Java
+- Appendix
