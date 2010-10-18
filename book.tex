@@ -8,7 +8,9 @@
 
   \section{Įžanga}
 
-  Sveikas skaitytojau. Šita knyga padės Jums susipažinti, įdiegti ir sukonfigūruoti
+  Sveikas skaitytojau. 
+
+  Šita knyga padės Jums susipažinti, įdiegti ir susikonfigūruoti
   Arch Linux sistema Jūsų kompiuteryje. Arch Linux yra lengva, mažai
   vietos užimanti GNU/Linux distribucija, orientuota į kompetetingus
   vartotojus. Šitas vadovas yra orientuotas į naujus Arch vartotojus,
@@ -16,8 +18,8 @@
 
   \section{Svarbiausi Arch Linux distribucijos bruožai}
   \begin{itemize}
-    \item Paprasta filosofija ir dizainas;
-    \item Visi paketai sukompiliuoti i686 ir x86$\_$64 architektūroms;
+    \item Paprasta filosofija ir paprastas dizainas;
+    \item Visi paketai kompiliuojami i686 ir x86$\_$64 architektūroms;
     \item BSD stiliaus paleidimo skriptai, kurie valdomi iš vieno, centrinio failo;
     \item mkinitcpio: Paprastas ir dinamiškas initramfs kūrėjas;
     \item Pacman paketų tvarkyklė yra lengva ir lanksti, reikalaujanti mažų sistemos resursų;
@@ -36,9 +38,9 @@
   Griffin. Autorines teises saugo GNU General Public Licenzijos 2
   versija.
 
-  \section{Arch būdas}
+  \section{Arch problemų sprendimo būdas}
   
-  Visos Arch distribucijos architektūra yra paremta vienu principu, -
+  Visos Arch distribucijos architektūra yra paremta vienu principu -
   viską išlaikyti kuo paprastesniam variante.
 
   Paprastumas šiame kontekste reiškia - be jokių bereikalingų
@@ -52,8 +54,8 @@
       žiniomis, negu būti lengvu naudojime ir technišku.'' - Aaron
       Griffin
     \item ``Subjektai neturi būti manipuliuojami, jeigu tai nėra
-      būtina'' - Occam skustuvas. Skustuvas šiuo atveju vaidina
-      nereikalingų operacijų pašalinimą ir tęsti priėjimą prie
+      būtina'' - Occam skustuvai. Skustuvas šiuo atveju vaidina
+      nereikalingų operacijų pašalinimą, leidžiantį tęsti priėjimą prie
       paprasto paaiškinimo, metodo ar teorijos.
     \item ``Neįprasta mano technikos dalis remiasi
       paprastumu.. Progreso dydis visą laiką remiasi paprastumo principu.'' - Bruce Lee
@@ -62,8 +64,8 @@
   \section{Apie šitą vadovą}
 
     Arch wiki yra labai geras informacijos šaltinis, tad pirmiausiai,
-    kreipdamiesi pagalbos, įsitikinkite, kad wiki puslapiuose nėra
-    parašyta Jūsų problema. Jeigu atsakimo į savo problema taip ir neradote, galite
+    kreipdamiesi pagalbos, įsitikinkite, kad Jūsų problema nėra
+    aprašyta wiki puslapyje. Jeigu atsakimo į savo problemą taip ir neradote, galite
     kreiptis į $\#$archlinux IRC kanalą freenode serveryje arba galite
     kreiptis į forumą - http://bbs.archlinux.org; Taip pat galite
     kreiptis į Arch Linux Lietuva bendruomenę http://sls.archlinux.lt.
@@ -78,6 +80,193 @@
     \end{itemize}
 
 \chapter{Pagrindinės sistemos įdiegimas}
-  \section{Naujausio įdiegimo laikmenos gavimas}
+  \section{Naujausios įdiegimo laikmenos gavimas}
+
+  Arch Linux oficialią įdiegimo laikmeną galite gauti iš
+  \textsl{http://archlinux.org/download}. Vadovo rašymo metu,
+  naujausia versija yra 2010.05.
+  \begin{itemize}
+    \item Tiek \textsl{Core} tiek \textsl{Netinstall} atvaizdai
+      suteikia tik pagrindinę sistemą. Verta pastebėti, jog
+      pagrindinėje Arch Linux sistemoje nėra jokios grafinės
+      aplinkos. Pagrindinė sistema susideda iš GNU įrankių grandinės ( kompiliatoriaus,
+      asmeblerio, linkerio, kt. ), Linux branduolio ir kelių papildomų
+      bibliotekų ir modulių.
+    \item Įdiegimas yra palengvintas tiek \textsl{Core}, tiek
+      \textsl{Netinstall} atvaizduose.
+    \item \textsl{Netinstall} atvaizdas yra mažesnis, bet jame
+      visiškai nėra pagrindinės sistemos paketų. Visa sistema yra
+      parsiunčiama iš interneto.
+  \end{itemize}
+
+  \section{Sistemos įdiegimas iš egzistuojančios GNU/Linux
+    distribucijos}
+
+  Arch Linux yra pakankamai lankstus, kad galėtų būti įdiegtas iš
+  kitos, egzistuojančios distribucijos į laisvą patriciją arba iš Live
+  CD.
+  Įdiegimą iš egzistuojančios GNU/Linux distribucijos apžvelgsime
+  vadovo pabaigoje.
+
+  % TODO:
+  % http://wiki.archlinux.org/index.php/Install_from_Existing_Linux
+
+  \section{Įdiegimas iš CD laikmenos}
+  
+  Iškepkite atsiųstą .iso atvaizdą į CD arba DVD su mėgstama CD/DVD
+  rašymo programa ir tęskite savo kelią į kitą skyrių \textsl{Arch
+    Linux įdiegimo krovimas}
+
+  \section{Diegimas iš Flash atminties kortelės arba USB atmintinės}
+
+  Sekantis metodas veiks bet kokiam Flash atminties tipui, kurį BIOS
+  leis krauti paleidimo metu, būtų tai kortelių skaitytuvas arba USB
+  portas.
+
+  \paragraph{UNIX Metodas}
+  
+  Įdėkite tuščią arba nereikalingą flash laikmeną, nustatykite iki jos
+  kelią ir įrašykite .iso atvaizdą, pasitelkus \textsl{/bin/dd}
+  programą:
+
+  \begin{verbatim}
+    dd if=archlinux-2010.05-{core|netinstall}-{i686|x86_64|dual}.iso of=/dev/sdx
+  \end{verbatim}
+
+  kur $if=$ yra kelias iki atvaizdo failo ir $of=$ yra kelias iki Jūsų
+  flash laikmenos. Įsitikinkite, kad naudojate \textsl{/dev/sdx}, o ne
+  \textsl{/dev/sdx1}. Jums reikės flash atminties tiek, kad joje
+  tilptų 381MB duomenų.
+
+  \paragraph{Patikrinkite md5sum}
+
+  Pasižymėkite koks buvo įrašų (blokų) skaičius, kai buvo rašoma į
+  laikmeną. Tuomet galima patikrinti:
+
+  \begin{verbatim}
+dd if=/dev/sdx count=irasu_skaicius status=noxfer | md5sum
+  \end{verbatim}
+
+  Patikrinimo kodas turi sutapti su parsiųsto atvaizdo md5sum.
+
+  %TODO: Microsoft Windows Method
+
+  \section{Arch Linux įdiegimo krovimas}
+  
+  Įdėkite CD ar Flash laikmeną, perkraukit kompiuterį ir paleiskite
+  sistema iš CD ar Flash laikmenos. Jums gali prireikti pakeisti
+  krovimosi eiliškumą BIOS nustatymuose arba paspausti kažkokį
+  mygtuką. Dažniausiai toks mygtukas būna DEL, F1, F2, F11 arba
+  F12. Pabandykite paspausti vieną iš jų, kuomet BIOS yra POST ( Power
+  On Self-Test ) režime.
+
+  Pastaba: Atminties reikalavimai baziniam įdiegimui yra tokie:
+  \begin{itemize}
+    \item \textsl{Core} : 128 MB RAM x86$\_$64/i686 ( pažymėti visi
+      paketai, su swap particija )
+    \item \textsl{Netinstall} : 128 MB RAM x86$\_$64/i686 ( pažymėti
+      visi paketai, su swap particija )
+  \end{itemize}
+
+  Šiame žingsnyje turėtų pasirodyti pagrindinis menu. Pasirinkite
+  Jums reikalingą opciją klaviatūros navigaciniais mygtukais ir padarę
+  pasirinkimą paspauskite 'Enter' mygtuką.
+
+  Dažniausiai, pirmą kartą kraunant Arch Linux \textsl{Boot Archlive}
+  yra tas pasirinkimas, kurio Jums reikia. Tačiau, jeigu turite bėdų
+  su libata/PATA arba neturite SATA (Serial ATA), pasirinkite
+  \textsl{Boot Archlive [legacy IDE]}.
+
+  Norint pakeisti GRUB pasirinkimus, paspauskite raidę
+  \textbf{e}. Dauguma vartotojų norės pakeisti framebuffer
+  rezoliuciją, patogesniam darbui. Pridėkite:
+  \begin{verbatim}
+vga=773
+  \end{verbatim}
+  kernelio eilutėje. Tuomet paspauskite \textbf{Enter} mygtuką, kad
+  įgalinti 1024x768 framebuffer rezoliuciją. Kuomet viskas bus
+  padaryta, paspauskite \textbf{b} mygtuką, kad pradėti sistemos
+  krovimą.
+
+  Dabar sistema turi pradėti krautis. Kuomet sistema pilnai pasikraus,
+  turėtų pasirodyti prisijungimo galimybė. Prisijunkite kaip
+  \textsl{root} vartotojas, kadangi Archlive diske iš \textsl{root}
+  vartotojo nereikalaujama slaptažodžio.
+
+  \paragraph{Klaviatūros išdėstymo keitimas}
+
+  Jeigu turite ne US klaviatūros išdėstymą, tuomet Jums reikia ją
+  pasikeisti. Tai galima atlikti su \textsl{km} komanda:
+  \begin{verbatim}
+km
+  \end{verbatim}
+  arba panaudoti \textsl{loadkeys} komandą:
+  \begin{verbatim}
+loadkeys layout
+  \end{verbatim}
+  ( pakeiskite \textsl{layout} su Jūsų pasirinktu klaviatūros
+  išdėstymu ).
+
+  Dauguma lietuviškų klaviatūrų yra US standarto su papildomais
+  lietuviškais simboliais, kurie pasirodo vietoj skaičių eilės,
+  esančios virš \textsl{q,w,e,r,t,y,u,i,o,p} klavišų eilės. Tai
+  reiškia, kad daugumoje atveju, Jums visiškai nereikia keisti
+  klaviatūros išdėstymo.
+
+  \paragraph{Dokumentacija}
+
+  Oficialus įdiegimo vadovas yra pasiekiamas iškarto diske. Norint jį
+  pasiekti, persijunkite į kitą konsolę ( ALT+F2 ) ir tuomet surinkite
+  tokią komandą:
+  \begin{verbatim}
+less /usr/share/aif/docs/official_installlation_guide_en
+  \end{verbatim}
+
+  \textsl{Less} komanda leis Jums peržvelgti visą vadovą
+  puslapiais. Norint persijungti atgal į įdiegimą, tiesiog paspauskite
+  Alt+F1 ir grįšite į pirmą konsolę, kurioje yra vykdomas įdiegimas.
+
+  Prireikus vėl paskaityti dokumentaciją, tiesiog persijunkite į antrą
+  terminalą su Alt+F2, norint grįžti prie įdiegimo - Alt+F1.
+
+  Pastaba: Įsidėmėkite, kad oficialus įdiegimo vadovas apžvelgia tik
+  pagrindinės sistemos įdiegimą ir konfigūravimą. Kai tik su
+  pagrindine sistema yra susitvarkyta, rekomenduojama grįžti prie
+  detalesnio vadovo, kuriame yra aprašyti visi reikalingi žingsniai po
+  įdiegimo.
+
+  \section{Įdiegimo paleidimas}
+
+  Kuomet esate prisijungė kaip \textsl{root} vartotojas, pirmame
+  terminale galite paleisti įdiegimo skriptą:
+  \begin{verbatim}
+    /arch/setup
+  \end{verbatim}
+
+  \subsection{Įdiegimo šaltinio pasirinkimas}
+
+  Po pasisveikinimo, Jūsų paprašys pasirinkti įdiegimo
+  šaltinį. Priklausomai nuo ankstesnės laikmenos pasirinkimo,
+  atitinkamai pasirinkite ir įdiegimo šaltinį.
+  \begin{itemize}
+    \item Jeigu pasirinkote \textsl{Core} įdiegimo atvaizdą, tęskite
+      toliau prie skyriaus \textsl{Laikrodžio nustatymas}
+    \item Jeigu pasirinkote \textsl{Netinstall}, Jums reiks rankiniu
+      būdu užkrauti tinklo plokštės tvarkykles ( žinoma, jeigu sistema
+      automatiškai neaptiks Jūsų turimos įrangos ). Udev yra labai
+      naudingas įrankis, norint sužinoti Jūsų turimą įrangą. Tai
+      galima patikrinti, pasitelkus \textsl{ifconfig -a} komandą.
+  \end{itemize}
+
+  \paragraph{Tinklo konfigūravimas (Netinstall)}
+
+  Šitam žingsnyje, sistema turi parodyti jos rastus tinklo
+  sąsajas. Jeigu sąsaja ir HWaddr ( HardWare address ) yra sąraše,
+  tuomet Jūsų tinklo plokštė buvo sėkmingai aptikta ir jos tvarkyklės
+  sėkmingai įkrautos į branduolį. Jeigu Jūsų tinklo plokštė atpažinta
+  nebuvo, tuomet Jums reikia rankiniu būdu kelti tvarkykles į
+  branduolį kitoje konsolėje.
+
+  Panašaus ekrano... % TODO
 
 \end{document}
