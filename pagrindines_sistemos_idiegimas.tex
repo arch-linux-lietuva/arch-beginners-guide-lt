@@ -1,0 +1,296 @@
+\chapter{Pagrindinės sistemos įdiegimas}
+  \section{Naujausios įdiegimo laikmenos gavimas}
+
+  Arch Linux oficialią įdiegimo laikmeną galite gauti iš
+  \textsl{http://archlinux.org/download}. Vadovo rašymo metu,
+  naujausia versija yra 2010.05.
+  \begin{itemize}
+    \item Tiek \textsl{Core} tiek \textsl{Netinstall} atvaizdai
+      suteikia tik pagrindinę sistemą. Verta pastebėti, jog
+      pagrindinėje Arch Linux sistemoje nėra jokios grafinės
+      aplinkos. Pagrindinė sistema susideda iš GNU įrankių grandinės ( kompiliatoriaus,
+      asmeblerio, linkerio, kt. ), Linux branduolio ir kelių papildomų
+      bibliotekų ir modulių.
+    \item Įdiegimas yra palengvintas tiek \textsl{Core}, tiek
+      \textsl{Netinstall} atvaizduose.
+    \item \textsl{Netinstall} atvaizdas yra mažesnis, bet jame
+      visiškai nėra pagrindinės sistemos paketų. Visa sistema yra
+      parsiunčiama iš interneto.
+  \end{itemize}
+
+  \section{Sistemos įdiegimas iš egzistuojančios GNU/Linux
+    distribucijos}
+
+  Arch Linux yra pakankamai lankstus, kad galėtų būti įdiegtas iš
+  kitos, egzistuojančios distribucijos į laisvą patriciją arba iš Live
+  CD.
+  Įdiegimą iš egzistuojančios GNU/Linux distribucijos apžvelgsime
+  vadovo pabaigoje.
+
+  % TODO:
+  % http://wiki.archlinux.org/index.php/Install_from_Existing_Linux
+
+  \section{Įdiegimas iš CD laikmenos}
+  
+  Iškepkite atsiųstą .iso atvaizdą į CD arba DVD su mėgstama CD/DVD
+  rašymo programa ir tęskite savo kelią į kitą skyrių \textsl{Arch
+    Linux įdiegimo krovimas}
+
+  \section{Diegimas iš Flash atminties kortelės arba USB atmintinės}
+
+  Sekantis metodas veiks bet kokiam Flash atminties tipui, kurį BIOS
+  leis krauti paleidimo metu, būtų tai kortelių skaitytuvas arba USB
+  portas.
+
+  \paragraph{UNIX Metodas}
+  
+  Įdėkite tuščią arba nereikalingą flash laikmeną, nustatykite iki jos
+  kelią ir įrašykite .iso atvaizdą, pasitelkus \textsl{/bin/dd}
+  programą:
+
+  \begin{verbatim}
+dd if=archlinux-2010.05-{core|netinstall}-{i686|x86_64|dual}.iso\
+  of=/dev/sdx
+  \end{verbatim}
+
+  kur $if=$ yra kelias iki atvaizdo failo ir $of=$ yra kelias iki Jūsų
+  flash laikmenos. Įsitikinkite, kad naudojate \textsl{/dev/sdx}, o ne
+  \textsl{/dev/sdx1}. Jums reikės flash atminties tiek, kad joje
+  tilptų 381MB duomenų.
+
+  \paragraph{Patikrinkite md5sum}
+
+  Pasižymėkite koks buvo įrašų (blokų) skaičius, kai buvo rašoma į
+  laikmeną. Tuomet galima patikrinti:
+
+  \begin{verbatim}
+dd if=/dev/sdx count=irasu_skaicius status=noxfer | md5sum
+  \end{verbatim}
+
+  Patikrinimo kodas turi sutapti su parsiųsto atvaizdo md5sum.
+
+  %TODO: Microsoft Windows Method
+
+  \section{Arch Linux įdiegimo krovimas}
+  
+  Įdėkite CD ar Flash laikmeną, perkraukit kompiuterį ir paleiskite
+  sistema iš CD ar Flash laikmenos. Jums gali prireikti pakeisti
+  krovimosi eiliškumą BIOS nustatymuose arba paspausti kažkokį
+  mygtuką. Dažniausiai toks mygtukas būna DEL, F1, F2, F11 arba
+  F12. Pabandykite paspausti vieną iš jų, kuomet BIOS yra POST ( Power
+  On Self-Test ) režime.
+
+  Pastaba: Atminties reikalavimai baziniam įdiegimui yra tokie:
+  \begin{itemize}
+    \item \textsl{Core} : 128 MB RAM x86$\_$64/i686 ( pažymėti visi
+      paketai, su swap particija )
+    \item \textsl{Netinstall} : 128 MB RAM x86$\_$64/i686 ( pažymėti
+      visi paketai, su swap particija )
+  \end{itemize}
+
+  Šiame žingsnyje turėtų pasirodyti pagrindinis menu. Pasirinkite
+  Jums reikalingą opciją klaviatūros navigaciniais mygtukais ir padarę
+  pasirinkimą paspauskite 'Enter' mygtuką.
+
+  Dažniausiai, pirmą kartą kraunant Arch Linux \textsl{Boot Archlive}
+  yra tas pasirinkimas, kurio Jums reikia. Tačiau, jeigu turite bėdų
+  su libata/PATA arba neturite SATA (Serial ATA), pasirinkite
+  \textsl{Boot Archlive [legacy IDE]}.
+
+  Norint pakeisti GRUB pasirinkimus, paspauskite raidę
+  \textbf{e}. Dauguma vartotojų norės pakeisti framebuffer
+  rezoliuciją, patogesniam darbui. Pridėkite:
+  \begin{verbatim}
+vga=773
+  \end{verbatim}
+  kernelio eilutėje. Tuomet paspauskite \textbf{Enter} mygtuką, kad
+  įgalinti 1024x768 framebuffer rezoliuciją. Kuomet viskas bus
+  padaryta, paspauskite \textbf{b} mygtuką, kad pradėti sistemos
+  krovimą.
+
+  Dabar sistema turi pradėti krautis. Kuomet sistema pilnai pasikraus,
+  turėtų pasirodyti prisijungimo galimybė. Prisijunkite kaip
+  \textsl{root} vartotojas, kadangi Archlive diske iš \textsl{root}
+  vartotojo nereikalaujama slaptažodžio.
+
+  \paragraph{Klaviatūros išdėstymo keitimas}
+
+  Jeigu turite ne US klaviatūros išdėstymą, tuomet Jums reikia ją
+  pasikeisti. Tai galima atlikti su \textsl{km} komanda:
+  \begin{verbatim}
+km
+  \end{verbatim}
+  arba panaudoti \textsl{loadkeys} komandą:
+  \begin{verbatim}
+loadkeys layout
+  \end{verbatim}
+  ( pakeiskite \textsl{layout} su Jūsų pasirinktu klaviatūros
+  išdėstymu ).
+
+  Dauguma lietuviškų klaviatūrų yra US standarto su papildomais
+  lietuviškais simboliais, kurie pasirodo vietoj skaičių eilės,
+  esančios virš \textsl{q,w,e,r,t,y,u,i,o,p} klavišų eilės. Tai
+  reiškia, kad daugumoje atveju, Jums visiškai nereikia keisti
+  klaviatūros išdėstymo.
+
+  \paragraph{Dokumentacija}
+
+  Oficialus įdiegimo vadovas yra pasiekiamas iškarto diske. Norint jį
+  pasiekti, persijunkite į kitą konsolę ( ALT+F2 ) ir tuomet surinkite
+  tokią komandą:
+  \begin{verbatim}
+less /usr/share/aif/docs/official_installlation_guide_en
+  \end{verbatim}
+
+  \textsl{Less} komanda leis Jums peržvelgti visą vadovą
+  puslapiais. Norint persijungti atgal į įdiegimą, tiesiog paspauskite
+  Alt+F1 ir grįšite į pirmą konsolę, kurioje yra vykdomas įdiegimas.
+
+  Prireikus vėl paskaityti dokumentaciją, tiesiog persijunkite į antrą
+  terminalą su Alt+F2, norint grįžti prie įdiegimo - Alt+F1.
+
+  Pastaba: Įsidėmėkite, kad oficialus įdiegimo vadovas apžvelgia tik
+  pagrindinės sistemos įdiegimą ir konfigūravimą. Kai tik su
+  pagrindine sistema yra susitvarkyta, rekomenduojama grįžti prie
+  detalesnio vadovo, kuriame yra aprašyti visi reikalingi žingsniai po
+  įdiegimo.
+
+  \section{Įdiegimo paleidimas}
+
+  Kuomet esate prisijungė kaip \textsl{root} vartotojas, pirmame
+  terminale galite paleisti įdiegimo skriptą:
+  \begin{verbatim}
+/arch/setup
+  \end{verbatim}
+
+  \subsection{Įdiegimo šaltinio pasirinkimas}
+
+  Po pasisveikinimo, Jūsų paprašys pasirinkti įdiegimo
+  šaltinį. Priklausomai nuo ankstesnės laikmenos pasirinkimo,
+  atitinkamai pasirinkite ir įdiegimo šaltinį.
+  \begin{itemize}
+    \item Jeigu pasirinkote \textsl{Core} įdiegimo atvaizdą, tęskite
+      toliau prie skyriaus \textsl{Laikrodžio nustatymas}
+    \item Jeigu pasirinkote \textsl{Netinstall}, Jums reiks rankiniu
+      būdu užkrauti tinklo plokštės tvarkykles ( žinoma, jeigu sistema
+      automatiškai neaptiks Jūsų turimos įrangos ). Udev yra labai
+      naudingas įrankis, norint sužinoti Jūsų turimą įrangą. Tai
+      galima patikrinti, pasitelkus \textsl{ifconfig -a} komandą.
+  \end{itemize}
+
+  \paragraph{Tinklo konfigūravimas (Netinstall)}
+
+  Šitam žingsnyje, sistema turi parodyti jos rastus tinklo
+  sąsajas. Jeigu sąsaja ir HWaddr ( HardWare address ) yra sąraše,
+  tuomet Jūsų tinklo plokštė buvo sėkmingai aptikta ir jos tvarkyklės
+  sėkmingai įkrautos į branduolį. Jeigu Jūsų tinklo plokštė atpažinta
+  nebuvo, tuomet Jums reikia rankiniu būdu kelti tvarkykles į
+  branduolį kitoje konsolėje.
+
+  Atsiradus panašiam langui, bus paprašyta pasirinkti \textsl{sąsają},
+  \textsl{zondą} arba \textsl{Atšaukti}. Pasirinkite reikiamą
+  \textsl{sąsają} ir tęskite.
+
+  Paskui įdiegimo programa paklaus Jūsų ar Jūs norite naudoti
+  \textsl{DHCP}. Pasirinkus \textsl{Yes}, įdiegimo programa paleis
+  \textbf{dhcpcd}, kuri aptiks tinklo sąsaja ir iš sąsajos reikalaus
+  IP adreso. Jeigu pasirinksite \textsl{No}, tuomet įdiegimo programa
+  paprašys Jūsų įvesti statišką IP, tinklo kaukę, transliatorių,
+  tinklo sąsajos DNS IP, HTTP ir FTP proxy. Paskutiniame žingsnyje
+  sistema parodys gautus nustatymus. Šitame žingsnyje galite patikrinti
+  ar visi nustatymai yra teisingi.
+
+  \paragraph{Greitasis (A)DSL paleidimas}
+
+  ( Jeigu turite modemą arba routerį tilto režime, jungiantis per ISP
+  jungtį )
+
+  Persijunkite į kitą konsolę ( ALT+F2 ), prisijunkite kaip
+  \textsl{root} vartotojas ir rašykite:
+
+  \begin{verbatim}
+pppoe-setup
+  \end{verbatim}
+
+  Jeigu viskas sukonfigūruota teisingai, pabaigoje galite prisijungti
+  prie savo ISP su:
+
+  \begin{verbatim}
+pppoe-start
+  \end{verbatim}
+
+  Grįžkite į pirmą konsolę ( ALT+F1 ) ir tęskite įdiegimą
+  \textsl{Laikrodžio nustatymas} skyriuje.
+
+  \paragraph{Greitasis bevielio tinklo paleidimas}
+
+  ( Jeigu turite bevielio ryšio galimybę įdiegimo metu )
+
+  Šiuo metu bevielio ryšio tvarkyklės yra pasiekiamos ir iš įdiegimo
+  aplinkos atvaizdo. Geras savo bevielio įrangos žinojimas šiuo atveju
+  Jums labai padės. Įsidėmėkite, jog sekantys nustatymai galios tik
+  dabartinėje aplinkoje. Kuomet baigsite įdiegimą, visus nustatymus
+  reiks pakartoti įdiegtoje sistemoje, norint ir toliau naudotis
+  bevieliu ryšiu.
+
+  Taip pat verta pastebėti, jog šie žingsniai nėra privalomi, jeigu
+  įdiegimas yra įmanomas ir be bevielio tinklo. Bevielio tinklo
+  konfigūravimas gali būti atliktas ir po įdiegimo pabaigos, jau
+  įdiegtoje sistemoje.
+
+  Pagrindiniai žingsniai būtų tokie:
+
+  \begin{itemize}
+    \item Persijunkite į laisvą konsolę ( pavyzdžiui 3, ALT+F3 );
+    \item Prisijunkite kaip \textsl{root} vartotojas;
+    \item ( Nebūtina ) Identifikuokite savo bevielio ryšio sąsają:
+      \begin{verbatim}
+lspci | grep -i net
+      \end{verbatim}
+    \item Įsitikinkite, kad \textsl{udev} atpažino bevielio ryšio
+      kortą ir pakrovė į branduolį reikalingus modulius. Tai galima
+      patikrinti su \textsl{/usr/bin/iwconfig} komanda:
+\begin{verbatim}
+iwconfig
+\end{verbatim}
+      Rezultatas turėtų būti kažkas panašaus:
+\begin{verbatim}
+lo no wireless extensions.
+eth0 no wireless extensions.
+wlan0    unassociated  ESSID:""
+         Mode:Managed  Channel=0  Access Point: Not-Associated   
+         Bit Rate:0 kb/s   Tx-Power=20 dBm   Sensitivity=8/0  
+         Retry limit:7   RTS thr:off   Fragment thr:off
+         Power Management:off
+         Link Quality:0  Signal level:0  Noise level:0
+         Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+         Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+\end{verbatim}
+      Šiame pavyzdyje, \textsl{wlan0} ir bus bevielio ryšio sąsają,
+      per kurią galima jungtis prie bevielio tinklo.
+    \item Sekantis žingsnis būtų įgalinti sąsają su
+      \textsl{/sbin/ifconfig <sąsaja> up} komanda.
+      Pavyzdys, turint \textsl{wlan0} sąsają:
+\begin{verbatim}
+ifconfig wlan0 up
+\end{verbatim}
+      Įsidėmėkite, jog Jūsų sąsajos pavadinimas gali būti kitoks, negu
+      \textsl{wlan0}. Priklausomai nuo modulio, kurį užkrovė
+      \textsl{udev}, Jūsų sąsajos pavadinimas gali būti
+      \textsl{wlan0}, \textsl{eth1}, kt.
+
+    \item Jeigu nežinote tiksliai savo bevielio tinklo \textsl{essid}
+      arba norite pasijungti prie Jums nežinomo bevielio tinklo,
+      naudokite \textsl{/sbin/iwlist <sąsaja> scan} komanda. 
+\begin{verbatim}
+iwlist wlan0 scan
+\end{verbatim}
+      Šį komanda peržvelgs šiuo metu pasiekiamus bevielio ryšio
+      tinklus.
+    \item Sekantis žingsnis būtų nurodyti Jūsų bevielio tinklo sąsajai
+      tinklo \textsl{essid}. Priklausomai nuo bevielio tinklo kodavimo
+      algoritmo (WEP, WPA arba išvis jokio), nurodymo procedūra gali
+      skirtis. Pavyzdžiui galima padaryti prielaidą, jog Jūs norite
+      prisijungti prie \textsl{}
+      
+  \end{itemize}
