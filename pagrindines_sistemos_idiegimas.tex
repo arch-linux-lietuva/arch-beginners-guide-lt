@@ -291,6 +291,174 @@ iwlist wlan0 scan
       tinklo \textsl{essid}. Priklausomai nuo bevielio tinklo kodavimo
       algoritmo (WEP, WPA arba išvis jokio), nurodymo procedūra gali
       skirtis. Pavyzdžiui galima padaryti prielaidą, jog Jūs norite
-      prisijungti prie \textsl{}
+      prisijungti prie \textsl{atviras-tinklas};
+    \item Jeigu tinklas nekoduojamas:
+\begin{verbatim}
+iwconfig wlan0 essid "atviras-tinklas"
+\end{verbatim}
+    \item Jeigu tinkle naudojamas WEP kodavimas su aštuntainiu
+      apsaugos kodu:
+\begin{verbatim}
+iwconfig wlan0 essid "atviras-tinklas" key 25dfb2575a
+\end{verbatim}
+    \item Jeigu tinkle naudojamas WEP kodavimas su ASCII slaptažodžiu:
+\begin{verbatim}
+iwconfig wlan0 essid "atviras-tinklas" key s:slaptaszodis
+\end{verbatim}
+    \item Tinkle naudojant WPA, prisijungimo procedūra šiek tiek
+      tampa sudėtingesne. Vėliau tokius pat rezultatus galima pasiekti
+      pasitelkiant \textsl{netcfg} įrankį. Tolesnės komandos sugeneruos Jums
+      konfigūracinius failus ir pabandys prisijungti prie tinklo:
+\begin{verbatim}
+wpa_passphrase atviras-tinklas "slaptazodis" >>/etc/wpa_supplicant.conf
+wpa_supplicant -B -Dwext -i wlan0 -c /etc/wpa_supplicant.conf
+\end{verbatim}
+      Verta pastebėti, jog antra komandai reikia žinoti kokias
+      tvarkykles naudoja bevielio tinklo sąsaja. Šiuo atvėju tai
+      \textsl{wext}. Prieš rašant šią komanda verta patikrinti kokias
+      tvarkykles į branduolį įkrovė \textsl{udev}.
+    \item Patikrinti ar visas procesas įvyko sėkmingai galima su:
+\begin{verbatim}
+iwconfig wlan0
+\end{verbatim}
+    \item Toliau sekantis žingsnis būtų paprašyti bevielio tinklo
+      prisijungti su \textsl{/sbin/dhcpcd <sąsaja>}. Pavyzdžiui:
+\begin{verbatim}
+dhcpcd wlan0
+\end{verbatim}
+      Norint pamatyti kreipimosi detales, galima pridėti \textsl{-d}
+      opciją ir \textsl{dhcpcd} parodys visus savo žingsnius:
+\begin{verbatim}
+dhcpcd -d wlan0
+\end{verbatim}
+    \item Paskutinis žingsnis būtų patikrinti ar dhcpcd sėkmingai
+      sujungė su bevielio tinklo maršrutizatoriumi ir Jūs turit
+      internetą:
+\begin{verbatim}
+ping -c 3 www.google.lt
+\end{verbatim}
       
   \end{itemize}
+
+Dabar Jūs jau turėtumėt būti prisijungę prie interneto ir dabar galite
+sėkmingai tęsti Arch Linux įdiegimą į Jūsų kompiuterį, naudojantis
+\textsl{Netinstall } atvaizdą.
+
+\paragraph{Ar mano bevielio tinklo korta reikalauja Firmware?}
+
+Labai mažas bevielio tinklo kortų, kartu su tvarkyklėmis, reikalauja
+ir firmware. Tai galima patikrinti su \textsl{/usr/bin/dmesg}
+komanda. 
+\begin{verbatim}
+dmesg | grep firmware
+\end{verbatim}
+Kaip pavyzdį galima paimti Intel kortas, kurios reikalauja naudoti
+kartu su tvarkyklėmis ir firmwarą:
+\begin{verbatim}
+firmware: requesting iwlwifi-5000-1.ucode
+\end{verbatim}
+Jeigu \textsl{dmesg} komanda nieko neparodė, vadinasi, Jūsų korta
+nereikalauja jokio firmware.
+
+\section{Laikrodžio nustatymas}
+
+Konfigūruojat sistemą įdiegimo metu, Jūsų bus paprašyta pasirinkti
+laikrodžio konfigūracijos tipą. Yra du laikrodžio konfigūracijos
+tipai: UTC ir localtime.
+
+\begin{itemize}
+  \item Pasirinkite UTC, jeigu Jūsų kompiuteryje veikia tik
+    \textsl{unix} tipo operacinės sistemos.
+  \item Pasirinkite localtime, jeigu Jūsų kompiuteryje veikia ir kito
+    tipo operacinės sistemos ( pavyzdžiui Windows 7 ).
+\end{itemize}
+
+\section{Kietojo disko paruošimas}
+
+\paragraph{Svarbu}
+
+Kietojo disko skaldymo procesas gali negrįžtamai pašalinti visus
+duomenys, esančius diske. Tęsiant sekančius žingsnius, patariama
+padaryti atsarginę visų Jums svarbių duomenų kopiją kitoje laikmenoje. 
+
+\paragraph{Svarbu}
+
+Sekančiuose žingsniuose pasirinkus ``Cancel'' kietojo disko paruošimas
+nenutrūks. Norint nutraukti kietojo disko paruošimo procedūrą, reikia
+visiškai išeiti iš įdiegimo. Tai galima padaryti \textsl{Ctrl+C}
+komanda. Tik tokiu atveju visi procesai bus sustabdyti ir Jūsų
+kietasis diskas liks nepakitęs.
+
+\paragraph{Pastaba}
+
+Visiškai nebūtina ruošti diską Arch Linux įdiegimui iš Arch Linux
+įdiegimo atvaizdo. Tai galima atlikti ir iš kitos distribucijos ar net
+Windows operacinės sistemos, pasitelkus disko paruošimo įrankius,
+tokius kaip \textsl{Gparter} ir kt. Jeigu diskas buvo suskaldytas ir
+paruoštas ankščiau, galite tęsti \textsl{Failų sistemos pajungimas}
+temoje.\\
+
+Patikrinkite, jog sistema atpažino Jūsų diską ir jo architektūra,
+pasitelkiant \textsl{/sbin/fdisk} komanda su \textsl{-l} opcija.
+
+Persijunkite į kitą konsolę ( Alt+F3 ) ir įveskite
+
+\begin{verbatim}
+fdisk -l
+\end{verbatim}
+
+Visai gerai būtų įsiminti kokius disko skirsnius Jūs norite skirti
+Arch Linux sistemai. Dar geriau būtų - užsirašyti.
+
+Persijunkite atgal į Arch Linux įdiegimą ( Alt+F1 )
+
+Pasirinkite patį pirmą menu įrašą ``Prepare Hard Drive''.
+
+\begin{itemize}
+  \item 1 pasirinkimas: ``Auto Prepare''.\\
+    ``Auto Prepare'' suskirsto Jūsų diską tokia architektūra:
+    \begin{itemize}
+      \item \textsl{/boot} skirstinys su \textsl{ext2} failų
+        sistema. Numatytas dydis yra 32MB. Sistema gali suteikti Jums
+        galimybę pakeisti /boot skirstinio dydį.
+        Jeigu planuojate turėti daug branduolių, sveika pasirinkti
+        šiek tiek daugiau ir dar plius kažkiek atsargai ( Tarkim 500MB
+        ).
+      \item \textsl{swap} skirstinys. Numatytas skirstinio dydis yra
+        256MB. Sistema gali suteikti Jums galimybę pakeisti
+        \textsf{swap} skirstinio dydį. Rekomenduojamas \textsl{swap}
+        skirstinio dydis: \textsl{turimas Ram atminties kiekis} x 2
+      \item Atskiri \textsl{/} ir \textsl{/home} skirstiniai, kurių
+        dydžius taip pat galima keisti. Galima pasirinkti iš sekančių
+        failų sistemos tipų: \textsl{ext2}, \textsl{ext3}, \textsl{ext4},
+        \textsl{reiserfs}, \textsl{xfs} ir
+        \textsl{jfs}. Rekomenduojama pasirinkti tokias pat failų
+        sistemas tiek \textsl{/}, tiek \textsl{/home} skirstiniams.
+    \end{itemize}
+    Verta pastebėti, jog ``Auto Prepare'' visiškai pertvarkys turimą
+    diską, t.y. ištrins visą informaciją ir visiškai perrašys disko
+    architektūrą.
+
+    \paragraph{Pastaba}
+
+    ``Auto Prepare'' siūloma pasirinkti tiems, kurie pirmą kartą
+    įdieginėja Arch Linux sistemą, pirmą kart mato
+    \textsl{/sbin/fdisk} ir labai bijo . Vėliau, šiek tiek įgudus, sistemą
+    vėlgi galima bus iš naujo įdiegti, tik šiuo atveju protingai
+    suskirstyti diskų skirstinius.
+
+  \item 2 pasirinkimas: ``Partition Hard Drives'' ( su \textsl{cfdisk}
+    )
+
+    Šitas pasirinkimas leis keisti diskų architektūrą ir skirstinių
+    tipus taip, kaip nori vartotojas.
+
+    Tie vartotojai, kurie jau yra pažįstami su \textsl{cfdisk} ir
+    disko skirstinių sudarymų, gali praleisti sekančia temą ir tęsti
+    \textsl{Paketų pasirinkimas} temoje, kuri yra toliau.
+
+\end{itemize}
+
+\subsection{Kietojo disko skaldymas}
+
+\paragraph{Skirstinio informacija}
