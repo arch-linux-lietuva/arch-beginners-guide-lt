@@ -462,3 +462,175 @@ Pasirinkite patį pirmą menu įrašą ``Prepare Hard Drive''.
 \subsection{Kietojo disko skaldymas}
 
 \paragraph{Skirstinio informacija}
+
+Kietojo disko skaldymas sudaro diske tam tikras atminties sritis,
+kurios vadinamos skirstiniais, kurie elgiasi kaip savarankiški diskai.
+
+Yra trijų tipų skirstiniai:
+\begin{itemize}
+  \item Primary
+  \item Extended
+  \item Logical
+\end{itemize}
+
+\textsl{Primary} skirsiniai gali būti kraunamieji skirsiniai (
+bootable ), tačiau jų skaičius yra limituotas iki 4 viename kietame
+diske. Jeigu sistemoje reikalaujama turėti daugiau kaip 4 skirstinius,
+tuomet reikia naudoti kitą skirstinio tipą - \textsl{extended}, kuris
+susidės iš \textsl{logical} skistinių.
+
+Pats \textsl{extended} skirstinys yra beveiksmis ir bevertis, kadangi
+pats \textsl{extended} skirstinys yra kaip talpa kitiems
+\textsl{logical} skirsiniams.
+
+\paragraph{Swap skirstinys}
+
+Swap skirstinys yra rezervuota kietojo disko talpa, kurią sisteminis
+branduolys galės naudoti kaip `RAM` atmintį, jeigu realios `RAM`
+atminties neužteks duotai užduočiai įvykdyti.
+
+Istoriškai, pagrindinis swap skirstinio reikalavimas yra x2 realios
+RAM atminties dydis. Bėgant laikui, šita taisyklė tampa neaktuali,
+kadangi pagrindinės atminties dydis asmeniniuose kompiuteriuose labai
+padidėjo. Šiuo metu, jeigu Jūsų kompiuteryje yra \textsl{512MB}
+pagrindinės atminties - dar galima taikyti x2 taisyklę, tačiau, jeigu
+Jūsų kompiuteryje yra \textsl{1024MB} atminties - apie swap skirstinį
+galite net pamiršti. Kodėl? Kadangi visuomet lieka galimybė susikurti
+ne swap skirstinį, o swap failą, kuris atlikt tą patį vaidmenį, ką
+atlieka ir swap skirstinys.
+
+Šiame vadove mes naudosime \textsl{1GB} swap skirstinį.
+
+\paragraph{Pastaba} Jeigu planuojate naudoti suspend-to-disk
+(hibernate) swap skirstinys turi būti mažų mažiausiai lygus RAM
+atminties dydžiui. Kai kurie Arch vartotojai rekomenduoja swap
+skirstinį padaryti 10-20 proc didesnį, palikti atsargą klaidos
+atvejui.
+
+\paragraph{Skirstinių schema}
+
+Skirstinių schema yra labai asmeninis reikalas. Nėra vieningo,
+numatyto geriausiu sprendimo skirstinių schemai. Kiekvieno vartotojo
+skirstinių schema bus skirtingai pritaikyta pagal jo poreikius ir
+darbo sistemos reikalavimus.
+
+Skirstinius galima ``pririšti'' prie tam tikrų direktorijų. Galimos
+direktorijos ir jų apibūdinimas:
+
+\begin{itemize}
+  \item \textbf{/} ( root ) Root failų sistema yra pagrindinė failų
+    sistema, iš kurios seka kitos failų sistemos. Jinai yra failų
+    sistemos hierarchijos viršūnėje. Kiekviena direktorija seka po
+    \textbf{/}, netgi tuomet, kai kažkuri direktorija yra pririšta
+    prie kito disko.
+  \item \textbf{/boot} Direktorija saugoja sisteminį branduolį,
+    ramdisk atvaizdus ir krovėjo ( grub )
+    konfigūraciją. \textsl{/boot} saugo visą informaciją, kuri
+    reikalinga branduoliui, prieš paleidžiant sistemą. Tokia
+    informacija gali būti išsaugoti \textsl{master boot sectors} arba
+    \textsl{sector map} failai. \textsl{/boot} yra naudojamas tik
+    sistemos krovimuisi, tačiau \textsl{/boot} gali būti iškeltas ir į
+    kitą disko skirstinio vietą.
+  \item \textbf{/home} Suteikia pakatalogį, kurio kiekvienas vardas
+    sutampa su sistemoje priregistravusiais vartotojų
+    vardais. \textsl{/home} saugoma visa informacija, susijusi su
+    vartotojo veikla, vartotojo asmeniniais duomenimis ir vartotojo
+    programų nustatymais.
+  \item \textbf{/usr} Šita direktorija pagal svarba eina iškarto po
+    \textsl{/} ( root ) direktorijos. Joje yra saugoma tokia
+    informacija, kuri pasiekiama visiems sistemoms vartotojams,
+    įskaitant ir programas bei tvarkykles, kurias gali naudoti iškarto
+    keli vartotojai. \textsl{/usr} yra sistemiškai prieinama, tačiau
+    ją galima tik skaityti. Tai leidžia suteikti prieigą tinkle
+    esančiam vartotojui pasiekti \textsl{/usr} direktoriją, tačiau
+    vartotojas negali tos informacijos perrašyti ar kitaip pakeisti.
+  \item \textbf{/tmp} Direktorija atlieka ``laikinos failų saugyklos''
+    vaidmenį. Kokia informacija gali būti laikina? Tai gali būti
+    programų \textsl{užraktai} - '.lck' tipo failai, kurie yra
+    naudojami sudarant sąlygas neleisti tai pačiai programai paleisti
+    savo kopijas iš skirtinų vartotojų vienu metu. Visi duomenys iš
+    \textsl{/tmp} yra pašalinami po kiekvieno sistemos užkrovimo.
+  \item \textbf{/var} Direktorija saugo savyje visą informaciją apie
+    kintamuosius: \textsl{spool} direktorijas ir failus,
+    administravimo ir žurnalo ( log ) failus, \textsl{pacman} puodynę,
+    ABS medį ir kt. Taip pat \textsl{/var} atlieka svarbų vaidmenį -
+    suteikia galimybę užkrauti \textsl{/usr} skaitymo režime. Viskas,
+    kas istoriškai buvo talpinama \textsl{/usr} direktorijoje,
+    priklausė nuo \textsl{/var} direktorijos.
+\end{itemize}
+
+Kiekvienam vartotojui gali iškilti klausimas - o kam man skaldyti
+diską į skirstinius ir paskui ``pririšinėti'' direktorijas prie
+atskirų skirstinių? Juk realiai galima padaryti du skirtinius - vienas
+swap, kitas / ( root ) direktorijai ir viskas.
+
+Taip, ir toks variantas yra įmanomas, tačiau, disko skaldymas ir
+skirstinių pririšimas prie direktorijų turi savo privalumų:
+
+\begin{itemize}
+  \item Saugumas: Kiekviena direktorija \textsl{/etc/fstab} faile gali
+    būti sukonfigūruota būti 'nosuid', 'nodev', 'noexec', 'readonly'
+    ir kt.
+  \item Stabilumas: Vartotojas, arba kvaila programa gali visiškai
+    užteršti diską bereikalingą informaciją, arba kritiškai reikalinga
+    informacija ( ypač \textsl{/boot} skirstinyje ) gali būti pažeista
+    ir sistema daugiau pati neužsikraus. 
+  \item Greitis: Failų sistema, į kurią yra rašoma labai dažnai, gali
+    patapti fragmentiška ( Geriausias būdas išvengti tokios problemos,
+    yra nuolat stebėti ar failų sistema neužima viso disko talpos
+    ). Atskiros failų sistemos yra atskirtos ir tarpusavyje negali
+    sąveikauti.
+  \item Vientisumas: Jeigu viena failų sistema sugadinama - kitos
+    lieka nepažeistos.
+  \item Universalumas: Duomenų dalinimasis tarp kompiuterių tampa daug
+    saugesnis, kuomet naudojami atskiri diskai duomenims perduoti. 
+\end{itemize}
+
+Šiame vadove, mes atskirsim \textsl{/}, \textsl{/var}, \textsl{/home}
+ir \textsl{swap} skirstinius.
+
+\paragraph{Pastaba} \textsl{/var} direktorija susideda iš daug ir mažų
+failų. Į tai reikia atsižvelgti, renkantis failų sistemos tipą.
+
+\paragraph{Kokie turi būti mano skirstinių dydžiai?}
+
+Toks klausimas yra atsakomas kiekvieno atskirai. Paprasčiausiais
+atvejais galima apsiriboti tik root ir swap skirstiniais, arba dar
+paprasčiau - vien tik root skirtiniu, be swap. Taip pat galite
+paeksperimentuoti ir pasirinkti tokią pat skirstinių ir direktorijų
+architektūrą, kaip ir mūsų pavyzdyje:
+
+\begin{itemize}
+  \item Root failų sistema ( \textbf{/} ) turės savyje \textsl{/usr}
+    direktorija, kuri yra gan didelė. Į tai turi būti
+    atsižvelgta. Apie 15-20GB šiai direktorijai turėtų būti užtektinai
+    kiekvienam vartotojui.
+  \item \textbf{/var} failų sistema susidės iš daugybės duomenų, tarp
+    kurių ir ABS medis, bei pacman puodynė. Paketų saugojimas
+    kompiuteryje turi savo privalumų - bet kada galima įdiegti senesnę
+    programos versiją. \textsl{/var} turi tendencija didėti - pacman
+    puodynė didėja nuolatos ir jinai gali labai didelę po ilgo pacman
+    naudojimo. Jeigu naudojate SSD tipo diską, patartiną perkelti
+    \textsl{/var} direktoriją į HDD tipo diską, taip išsaugant SSD
+    tipo diską nuo bereikalingų rašymo/skaitymo operacijų. Darbiniam
+    kompiuteryje \textsl{/var} direktorijai galima skirti 8-12GB disko
+    vietos. Serveriai pasižymi ypač dideliais \textsl{/var}
+    direktorijos matmenimis.
+  \item \textsl{/home} direktorija yra ta vieta, kur saugomi vartotojo
+    asmeniniai duomenys, atsiųstas turinys ir kt. Darbiniame
+    kompiuteryje, \textsl{/home} direktorija dažniausiai yra pati
+    didžiausia. Verta prisiminti, jog jeigu Jūs iš naujo diegsite Arch
+    Linux - Jums \textsl{/home} direktorija niekur nedings ( jeigu
+    ``pririšote'' \textsl{/home} direktoriją prie kito skirstinio ).
+  \item Kiekvieno disko dydžio 25 procentai nueina apsaugojimui nuo
+    neprognozuotų atsitikimų, sistemos išplėtimo ir vaidins gerą
+    priemonę prieš fragmentaciją.
+\end{itemize}
+
+\paragraph{Skirstinių kūrimas su cfdisk}
+
+Pradėkite sukurdami naują skirstinį, kuris bus pririštas prie root
+failų sistemos.
+
+Pasirinkite \textbf{N}ew -> Primary ir įveskite norimą root failų
+sistemos skirstinio dydį. Padėkite diską schemos pradžioje.
