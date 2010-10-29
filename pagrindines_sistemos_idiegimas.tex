@@ -634,3 +634,140 @@ failų sistemos.
 
 Pasirinkite \textbf{N}ew -> Primary ir įveskite norimą root failų
 sistemos skirstinio dydį. Padėkite diską schemos pradžioje.
+
+Taip pat pasirinkite \textbf{T}ype '83 Linux'. Naujai sukurtas
+skirstinys, kuris bus pririštas prie \textsl{/} ( root ) failų
+direktorijos, turėtų pasirodyti \textsl{sda1} pavadinimu.
+
+Dabar sukurkite dar vieną \textsl{primary} '83 Linux' tipo
+skirstinį. Šitas skirstinys bus pririštas prie \textsl{/var} failų
+direktorijos. Jis turėtų pasirodyti \textsl{sda2} pavadinimu.
+
+Sekantis žingsnis būtų sukurti \textsl{swap} skirstinį. Pasirinkite
+norimą dydį ir '82 ( Linux swap / Solaris )' tipą. Sukurtas skirstinys
+turėtų pasirodyti kaip \textsl{sda3}.
+
+Paskutinis žingsnis - sukurti skirstinį, kuriame gulės \textsl{/home}
+direktorija. Pasirinkite \textsl{primary} ir '83 Linux' skirstinio
+tipą. Sukurtas skirstinys pasirodys kaip \textsl{sda4}.
+
+Pavyzdžiui:
+
+\begin{verbatim}
+Name    Flags     Part Type    FS Type           [Label]         Size (MB)
+-------------------------------------------------------------------------
+sda1               Primary     Linux                             15440 #root
+sda2               Primary     Linux                             10256 #/var
+sda3               Primary     Linux swap / Solaris              1024  #swap
+sda4               Primary     Linux                             140480 #/home
+\end{verbatim}
+
+Telieka tik išsaugoti skirstinių architektūra pasirinkus
+\textbf{W}rite ir surinkti '\textsl{yes}'. Po šitos operacijos
+\textsl{cfdisk} visiškai ištrins informaciją iš kietojo
+disko. Pasirinkite \textbf{Q}uit, norint išeiti į
+programos. Pasirinkite \textsl{Done}, norint išeiti iš menu ir tęsti
+su \textsl{Direktorijų pririšimas}
+
+\subsection{Direktorijų pririšimas}
+
+Parinkite kiekvienam skirstiniui pririšama failų sistemos
+direktoriją ( Nepamirškite, jog skirstiniai baigiasi numeriais. Taip
+pat \textsl{sda} reiškia net ne skirstinį, o visą diską aplamai ).
+
+\paragraph{Failų sistemos tipai}
+
+Failų sistemos pasirinkimas yra labai asmeninis reikalas. Kiekvienas
+renkasi savo failų sistemą pagal jo poreikius. Kiekvienas failų
+sistemos tipas turi savo pliusų, minusų ir unikalumų. Trumpai galime
+aprašyti Arch Linux palaikomas failų sistemas:
+
+\begin{enumerate}
+
+  \item \textbf{ext2} \textsl{Second Extended FileSystem} - sena,
+    patikima GNU/Linux failų sistema. Labai stabili, bet be žurnalo
+    palaikymo. Tikrai netinka \textsl{/} ( root ) ir \textsl{/home}
+    direktorijoms, dėl labai ilgo fsck'o. Failų sistema \textsl{ext2}
+    gali būti lengvai konvertuota į \textsl{ext3} failų
+    sistemą. Dažniausiai \textsl{ext2} pasirenkama \textsl{/boot}
+    direktorijai.
+  \item \textbf{ext3} \textsl{Third Extended FileSystem} - savo
+    originale yra \textsl{ext2} failų sistema su žurnalo
+    palaikymu. Failų sistema \textsl{ext3} turi atgalinį palaikymą
+    \textsl{ext2} failų sistemai. Ypač stabili, brandi ir kol kas
+    plačiausiai naudojama failų sistema. Failų sistema buvo kuriama
+    Gnu/Linux.
+  \item \textbf{ext4} \textsl{Fourth Extended FileSystem} - turi
+    atgalinį \textsl{ext3} ir \textsl{ext2} palaikymą. Pristato diskų
+    palaikymą, kurių talpa siekia virš 1 exabaito ir failo dydžių,
+    kurių svoris siekia 16 terabaitų. Padidėjo ir subdirektorių
+    palaikymas - nuo 32 000 ( ext3 ) iki 64 000. Pat pat siūlo realaus
+    laiko fragmentavimą.
+  \item \textbf{ReiserFS} (V3) - tai aukštos kokybės žurnalinė failų
+    sistema, kuri naudoja labai neįprasta ir kūrybinga duomenų
+    perdavimo algoritmą. ReiserFS dirba labai greitai, ypač jeigu
+    kalba eina apie daug mažų bylų. ReiserFS yra greitai formatuojama,
+    tačiau labai lėta pririšime. Pakankamai brandi ir
+    stabili. ReiserFS šiuo metu nėra vystoma ( Reiser4 yra naujausia
+    Reiser failų sistema ). Rekomenduojamą ReiserFS pasirinkti
+    \textsl{/var} direktorijai.
+  \item \textbf{JFS} - IBM sukurta \textbf{J}ournaled
+    \textbf{F}ile\textbf{S}ystem yra pati pirma failų sistema, kuri
+    turėjo žurnalo palaikymą. Iki prisijungimo prie Gnu/Linux IBM
+    ilgus metus naudojo JFS savo AIX Operacinėje sistemoje. Šiuo metu
+    JFS reikalauja mažiausiai sistemos resursų iš visų Gnu/Linux failų
+    sistemų. Labai greita formatavime, pririšime ir gera visuose
+    aspektuose, ypač jeigu ateina kirtis iš įvesties/išvesties
+    įrenginio. Ne taip plačiai palaikoma kaip ext ar ReiserFS, tačiau
+    labai brandi ir stabili sistema.
+  \item \textbf{XFS} - dar viena ankstyva žurnalo palaikymą turinti
+    failų sistema. Ją sukūrė Silicon Graphics IRIX operacinei
+    sistemai, o vėliau ji buvo prijungta prie Gnu/Linux. XFS siūlo
+    labai greitą duomenų apsikeitimą dirbant su dideliais skirstiniais
+    arba didelėmis bylomis.
+
+\end{enumerate}
+
+\paragraph{Pastaba} JFS ir XFS sistemos negali būti sumažintos disko
+skaldymo programų ( kaip gparter ar parted magic ).
+
+\paragraph{Pastaba apie žurnalo palaikymą}
+
+Visos ( išskyrus ext2 ) viršuje išvardintos failų sistemos turi
+žurnalo palaikymą. Tokios failų sistemos yra gan
+lanksčios klaidų atveju. Tai pasiekiama labai paprastai - kai
+vartotojas padaro korekciją byloje - žurnalinė sistema pirmiausiai
+įrašo pakeitimo informaciją į savo žurnalą, o tik paskui pakeičia
+realią informaciją. Verta pastebėti, jog ne visos žurnalinės sistemos
+yra vienodos; pavyzdžiui tik ext3 ir ext4 sistemos siūlo data-mode
+žurnalo palaikymą. Tai reiškia, jog žurnalinė sistema savo žurnale
+saugo tiek duomenis, tiek meta duomenis ( tačiau tokiu atveju labai
+nukenčia sistemos greitis ). Kiti siūlo ordered-mode. Tokiu atveju
+žurnale saugomi tik meta duomenis. Tačiau bet kokiu atveju, visos
+žurnalinės sistemos atstatys jūsų failų sistemą po lūžio. data-mode
+siūlo geriausią duomenų apsauga, tačiau tai gali įtakoti sistemos
+greitį, kadangi duomenys yra rašomi du kartus - vieną kartą į žurnalą,
+o kitą kartą į diską. Remiantis kokio svarbumo duomenys bus saugomi
+diske, atitinkamai reikia pasirinkti ir disko failų sistemą.
+
+\paragraph{Tęsiam...}
+
+Pasirinkite ir sukurkite failų sistemą ( skirstinio formatavimas ) ir
+pririškite skirtinį prie \textbf{/} direktorijos, pasirinkdami
+\textbf{yes}. Toliau sistema paragins pridėti papildomus
+skirtinius. Mūsų pavyzdyje lieka sda2 ir sda4. Sda2 skirtiniui
+parenkame failų sistemą ir pririšam prie \textbf{/var}. Ir galiausiai
+parenkam sda4 skirstiniui failų sistemą ir pririšam jį prie
+\textsl{/home}.
+
+\paragraph{Pastaba} jeigu nesukūrėte arba Jums tiesiog nereikia
+atskirto \textbf{/boot} skirstinio - ignoruokite pranešimą, kurį
+gausite apie \textbf{/boot} direktoriją.
+
+Grįžkite į pagrindinį menu.
+
+\section{Paketų pasirinkimas}
+
+\begin{itemize}
+  \item 
+\end{itemize}
