@@ -769,5 +769,156 @@ Grįžkite į pagrindinį menu.
 \section{Paketų pasirinkimas}
 
 \begin{itemize}
-  \item 
+  \item Core ISO: Savo paketų šaltiniu pasirinkite CD diską.
+  \item Netinstall: Pasirinkite FTP/HTTP veidrodį. \textsl{Verta
+    pažymėti, jog archlinux.org greitis yra sumažintas iki 50KB/s.}
+  \item Visi įdiegiami paketai yra tik iš [core] saugyklos. Jie yra
+    padalinti į dvi grupes:
+    \begin{itemize}
+      \item \textbf{Base}: Paketai iš [core] saugyklos, kurie suteikia
+        minimalią aplinką. Visuomet yra būtina pasirinkti šitą
+        kategoriją, tačiau galima pasirinkti, kokius paketus
+        pašalinti.
+      \item \textbf{Base-devel}: Papildomi įrankiai iš [core]
+        saugyklos: \textbf{make}, \textbf{automake} ir kt. Daugumai
+        naujokų derėtų pasirinkti šitą kategoriją, nes šitų įrankių
+        ankščiau ar vėliau vistiek prireiks.
+    \end{itemize} 
 \end{itemize}
+
+Po kategorijos pasirinkimo, jums bus pateiktas pilnas paketų
+sąrašas. Naudodamiesi tarpo klavišu galite pažymėti arba atžymėti
+paketą.
+
+\paragraph{Pastaba} Po kategorijos pasirinkimo, visi ten esantys
+paketai bus pažymėti įdiegimui.
+
+\paragraph{Pastaba} Jeigu yra reikalaujamas bevielis ryšis,
+prisiminkite pasirinkti įdiegimui \textbf{wireless$\_$tools}
+paketą. Kai kurie bevielio tinklo sąsajos taip pat reikalauja
+\textbf{ndiswrapper} ar/ir specifinės \textbf{firmware}. Jeigu bus
+naudojamas WPA kodavimas, taip pat reikalinga pasirinkti
+\textbf{wpa$\_$supplicant} paketą. Taip pat labai pravartu pasirinkti
+ir \textbf{netcfg}, kuris padės konfigūruojant tinklą ir profilius.
+
+
+Po paketų pasirinkimo, palikite pasirinkimo langą ir tęskite toliau
+\textsl{Paketų įdiegimas}
+
+\section{Paketų įdiegimas}
+
+Toliau pasirinkite ``Install Packages''.
+
+\begin{itemize}
+  \item Netinstall: Dabar pacman paketų tvarkyklė atsiųs ir įdiegs
+    paketus iš saugyklos. Eigą galima peržiūrėti Alt+F5, grįžti atgal į
+    diegimo langą galima su Alt+F1.
+  \item Core atvaizdas: pacman paketus ims iš CD/USB atvaizdo. 
+\end{itemize}
+
+Kai kurios įdiegimo programos paklaus ar nenorite išsaugoti paketus į
+pacman programos podėlį. Jeigu pasirinksite 'yes', tuomet turite
+galimybę įdiegti programų senesnes versijas po jų atnaujinimų, todėl
+rekomenduojama yra pasirinkti 'yes'. Ateityje bet kada bus galima
+ištrinti viską iš pacman programos podėlio. Įdiegimo programa dabar
+turėtų įdiegti visus paketus, kaip ir Arch 2.6 branduolį į naują
+sistemą.
+
+Po paketų parsiuntimo, įdiegimo programa patikrins jų
+vientisumą. Toliau, jinai sukurs branduolį iš parsiųstų paketų.
+
+\section{Sistemos konfigūravimas}
+
+\textsl{Atidus sekimas ir supratimas yra kritiniai kriterijai, norint
+  teisingai susikonfigūruoti sistemą.}
+
+\begin{itemize}
+  \item Šiame žingsnyje yra galimas pagrindinės Arch Linux sistemos
+    konfigūravimas.
+  \item Ankstesnės įdiegimo versijos naudojosi \textsl{hwdetect}
+    surinkti informaciją apie esamą sistemą. Tokia technika jau
+    pasenusi. Šiuo metu \textsl{udev} turėtų automatiškai atpažinti ir
+    įkelti į branduolį reikalingus modulius sistemos krovimo metu.
+\end{itemize}
+
+Dabar bus suteikta galimybė pasirinkti redaktorių: \textsl{nano},
+\textsl{joe} arba \textsl{vi} ( \textsl{nano} yra pats lengviausias
+naudojime iš visų trijų). Po pasirinkimo, bus parodytas sąrašas bylų,
+kurias galima konfigūruoti.
+
+\paragraph{Pastaba} Šiame žingsnyje labai svarbu visus konfigūracinius
+failus pakoreguoti arba bent atidaryti ir įsitikinti, kad viskas
+gerai. Dažniausiai pasitaikanti klaida yra, kai vartotojai tiesiog
+praleidžia šitą žingsnį.
+
+\paragraph{Ar įdiegimo programa gali tai atlikti automatizuotai?}
+
+Slėpti sistemos konfigūravimą yra visiška ``The Arch Way''
+priešingybė. Šiuo metu, naujausios Linux branduolio versijos ir
+aparatinės įrangos įrankiai siūlo tikrai gerą įrangos palaikymą ir
+automatinį konfigūravimą, tačiau Arch pateikia vartotojui visas galimas
+sistemos konfigūracijos galimybes, kadangi taip išlaikomas aiškumas ir
+sistemos resursų kontrolė. Kuomet baigsite redaguoti arba bent
+peržiūrinėti konfigūracines bylas, jau turėsite bazinį supratimą apie
+Arch Linux sistemos rankinį konfigūravimą ir bazinę struktūrą. Tokia
+patirtis pravers naudojant ir sėkmingai palaikant sistemą po įdiegimo
+pabaigos.
+
+\subsection{/etc/rc.conf}
+
+Arch Linux naudoja \textsl{/etc/rc.conf} kaip pagrindinę sisteminę
+konfigūracinę bylą. Byla sudaro didelė įvairovė konfigūraciniu
+nustatymu, kurie pagrinde reikalingi sistemos krovimosi metu. Kaip
+nusako ir pats bylos pavadinimas - konfigūracinė byla nusako visų
+\textsl{/etc/rc*} bylų paleidimą, bei jų konfigūravimą. 
+
+\subsubsection{LOCALIZATION sekcija}
+
+\begin{itemize}
+  \item \textbf{LOCALE=}: Šita eilutė nusako sistemos lokalę, kuri bus
+    naudojama visų i18n programų ir įrankių. Galimų lokalių sąrašą
+    galima peržiūrėti su \textsl{locale -a} komanda iš komandinės
+    eilutės. Rekomenduojama palikti ``en$\_$US. Vėliau galima bus
+    susigeneruoti dvi lokales - tiek lietuvišką, tiek anglišką.
+  \item \textbf{HARDWARECLOCK=}: Nusako kokiu formatu bus saugomas
+    laikas įrenginyje, kuomet yra atliekama sinchronizacija pakrovimo
+    ir stabdymo metu: \textsl{UTC} arba \textsl{localtime}. UTC yra
+    labai geras, kadangi jis labai supaprastina visą laiko saugojimo
+    procesą, tačiau, jeigu planuojate savo kompiuteryje turėti ir
+    kitas operacinės sistemas, tokias kaip Windows, patartina yra
+    pasirinkti localtime.
+  \item \textbf{USEDIRECTISA=}: Nustatymu galima pasakyti, jog sistema
+    naudos tiesioginį Į/I kreipinį į įrangos laikrodį, o ne
+    \textsl{/dev/rtc}.
+  \item \textbf{TIMEZONE=}: Nusako laiko juostą. Visas galimas laiko
+    zonas galite peržiūrėti \textsl{/usr/share/zoneinfo}.
+  \item \textbf{KEYMAP=}: Nusako klaviatūros išdėstymą. Visus galimus
+    klaviatūros išdėstymus galima rasti
+    \textsl{/usr/share/kdb/keymaps}. Šitas nustatymas veikia tik TTY
+    aplinkoje, jis visiškai neįtakoja jokias langų tvarkykles ar
+    \textbf{X}.
+  \item \textbf{CONSOLEFONT=}: Komandinės eilutės šriftas. Visus
+    galimus komandinės eilutės šriftus galite peržiūrėti
+    \textsl{/usr/share/kdb/consolefonts}. Pagal numatytus nustatymus,
+    tinka ir tuščias įrašas.
+  \item \textbf{CONSOLEMAP=}: Nusako komandinės eilutės žemėlapį su
+    \textsl{setfont} programa paleidimo metu. Galimus komandinės
+    eilutės žemėlapius galima rasti
+    \textsl{/usr/share/kbd/consoletrans}, žinoma, jeigu tai yra
+    būtina. Pagal numatytus nustatymus tuščias įrašas tinka.
+  \item {USECOLOR=}: Pasirinkite ``yes'', jeigu turite monitorių su
+    spalvomis. :)
+\end{itemize}
+Byloje ``LOCALIZATION'' sekcija turi atrodyti panaši į:
+\begin{verbatim}
+LOCALE="en_US.utf8"
+HARDWARECLOCK="localtime"
+USEDIRECTISA="no"
+TIMEZONE="Europe/Vilnius"
+KEYMAP="us"
+CONSOLEFONT=
+CONSOLEMAP=
+USECOLOR="yes"
+\end{verbatim}
+
+\subsubsection{HARDWARE sekcija}
