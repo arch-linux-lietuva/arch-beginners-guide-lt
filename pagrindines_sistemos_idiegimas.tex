@@ -1074,7 +1074,7 @@ pasisavino šitą terminą ir pakeitė jo kilmę kaip į žodžių junginį
 ``\textbf{d}isk \textbf{a}nd \textbf{e}xecution \textbf{mon}itor''.
 
 
-\subsubsection{/etc/fstab}
+\subsection{/etc/fstab}
 
 \textbf{Fstab} ( trumpinimas iš žodžių \textbf{f}ile \textbf{s}ystems
 \textbf{tab}le ) yra dalis sistemos konfigūracijos, kuriame nurodomi
@@ -1130,5 +1130,84 @@ none            /dev/shm  tmpfs    defaults                  0         0
     kaip nereikalaujantis atsarginių kopijų darymo. 
   \item \textbf{<pass>}: nusako failų sistemos tikrinimo prioritetą
     sistemos krovimosi metu. Pagrindinė failų sistema turi būti
-    nurodoma 1, o visos kitos turi turėti nurodymą 0 arba 2. 
+    nurodoma 1, o visos kitos turi turėti nurodymą 0 arba 2. Failų
+    sistemos, kurios yra tam pačiam diske, bus tikrinamos
+    sinchroniškai. Failų sistemos, kurios yra skirtinguose
+    diskuose, bus tikrinamos tuo pačiu metu naudojant paralelizmą,
+    esantį techninėje įrangoje. Jeigu šeštas parametras nėra nurodomas
+    arba yra 0, fsck netikrins failų sistemos. 
 \end{itemize}
+
+\subsection{/etc/mkinitcpio.conf}
+
+  \textsl{Daugumai vartotojų nereikia redaguoti sekančios konfigūracinės
+    bylos, tačiau galite perskaityti nurodytą informaciją savo žinių
+    gilinimui.}
+
+  Konfigūracinė byla leidžia toliau tęsti kruopštų sistemos nustatymą
+  ties ram failų sistema arba initramfs arba istoriškai vadinamą
+  initrd. Initramfs yra gzip suarchyvuotas sistemos atvaizdas, kuris
+  gali būti tik skaitomas sistemos krovimo metu. Initramfs tikslas yra
+  suteikti tiltą sistemai iki pagrindinės failų sistemos. Tai reiškia,
+  kad jis turi užkrauti visus reikiamus modulius į sisteminį
+  branduolį. Tuo metu, kai initramfs užkrauna reikiamus modulius
+  automatiškai, arba rankiniu būdu, viskas toliau perduodama
+  sisteminiam branduoliui. Sekant iš initramfs paskirties, byloje turi
+  būti nurodomi tik moduliai, kurie yra reikalingi norint sėkmingai
+  pasiekti sistemos branduolį ir pagrindinę failų sistemą. Jam
+  nereikia nurodyti kiekvieno modulio, kuris bus naudojamas
+  sistemos. Likusi dalis moduliu bus užkrauta vėliau, kartu su
+  branduoliu, udev pagalba, init metu. 
+
+  \textbf{mkinitcpio} yra sekanti karta \textbf{initramfs} kūrime. Jis
+  turi labai daug privalumu, lyginant su senais \textbf{mkinitrd} ir
+  \textbf{mkinitramfs} skriptais.
+
+  \begin{itemize}
+    \item Jis naudoja \textbf{glibc} ir \textbf{busybox}. Taip
+      suteikiama maža ir lengva bazė.
+    \item Jis naudoja \textbf{udev} krovimo metu taip pašalindamas
+      modulius, kurie nėra reikalingi norint pasiekti sisteminį
+      branduolį, bei pagrindinę failų sistemą. 
+    \item Jo kablio tipo paleidimo skriptai ( hooks ) yra lengvai praturtinami
+      su papildomais kabliais, kurie įtraukiami per pacman
+      programą. Taip visiškai nereikia redaguoti mkinitcpio bylos.
+    \item Jis palaiko \textbf{lvm2}, \textbf{dm-crypt}, \textbf{raid},
+      \textbf{swsusp} bei \textbf{suspend2} pažadinant ar užmigdant ir
+      krovimą iš usb įrangos.
+    \item Daugelis ypatybių gali būti pakeisti per sistemos branduolio
+      komandinę eilutę, nereikalaujant papildomai kompiliuoti
+      atvaizdo.
+    \item Mkinitcpio skriptas laidžia įtraukti sisteminį branduolį į
+      atvaizdą bei tiesiog būti sisteminiam branduolyje. 
+    \item Jo lankstumas daugeliu atveju nereikalauja perkompiliuoti
+      sisteminio branduolio.
+  \end{itemize}
+
+  Naudojant RAID arba LVM pagrindinėje failų sistemoje, turi būti
+  sukonfigūruoti tam tikri kabliai ( HOOKS ). Pridėkite ``usbinput''
+  jeigu naudojate usb klaviatūrą. Nepamirškite pridėti ``usb'', jeigu
+  diegiate Arch Linux į usb laikmeną, kaip pavyzdžiui:
+
+  \begin{verbatim}
+HOOKS="base udev autodetect pata scsi sata usb filesystems keymap usbinput"
+  \end{verbatim}
+
+  Jeigu yra būtinas USB įrenginių, FireWire, PCMCIA, NFS, RAID, LVM2,
+  užkoduotų laikmenų ar DSDT palaikymas - atitinkamai sukonfigūruokite
+  kablius ( HOOKS ).
+
+  \textbf{Mkinitcpio} yra Arch inovacija, kuri buvo kuriama Aaron
+  Griffin ir Tobias Powalowski su tam tikra pagalba iš bendruomenės. 
+
+\subsection{/etc/modprobe.d/modprobe.conf}
+
+  Sekanti konfigūracinė byla gali būti naudojama papildomiems
+  nustatymams branduolio moduliams. Nėra reikalavimo redaguoti
+  sekančią bylą.
+
+\subsection{/etc/resolv.conf ( statiniam IP )}
+
+  
+
+\subsection{/etc/hosts}
