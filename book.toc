@@ -1,0 +1,58 @@
+\select@language {lithuanian}
+\contentsline {chapter}{\numberline {1}\IeC {\k I}vadas}{5}
+\contentsline {section}{\numberline {1.1}\IeC {\k I}\IeC {\v z}anga}{5}
+\contentsline {section}{\numberline {1.2}Svarbiausi Arch Linux distribucijos bruo\IeC {\v z}ai}{5}
+\contentsline {section}{\numberline {1.3}Licenzija}{5}
+\contentsline {section}{\numberline {1.4}Arch problem\IeC {\k u} sprendimo b\IeC {\=u}das}{6}
+\contentsline {section}{\numberline {1.5}Apie \IeC {\v s}it\IeC {\k a} vadov\IeC {\k a}}{6}
+\contentsline {chapter}{\numberline {2}Pagrindin\IeC {\.e}s sistemos \IeC {\k i}diegimas}{7}
+\contentsline {section}{\numberline {2.1}Naujausios \IeC {\k i}diegimo laikmenos gavimas}{7}
+\contentsline {section}{\numberline {2.2}Sistemos \IeC {\k i}diegimas i\IeC {\v s} egzistuojan\IeC {\v c}ios GNU/Linux distribucijos}{7}
+\contentsline {section}{\numberline {2.3}\IeC {\k I}diegimas i\IeC {\v s} CD laikmenos}{7}
+\contentsline {section}{\numberline {2.4}Diegimas i\IeC {\v s} Flash atminties kortel\IeC {\.e}s arba USB atmintin\IeC {\.e}s}{7}
+\contentsline {paragraph}{UNIX Metodas}{8}
+\contentsline {paragraph}{Patikrinkite md5sum}{8}
+\contentsline {section}{\numberline {2.5}Arch Linux \IeC {\k i}diegimo krovimas}{8}
+\contentsline {paragraph}{Klaviat\IeC {\=u}ros i\IeC {\v s}d\IeC {\.e}stymo keitimas}{9}
+\contentsline {paragraph}{Dokumentacija}{9}
+\contentsline {section}{\numberline {2.6}\IeC {\k I}diegimo paleidimas}{9}
+\contentsline {subsection}{\numberline {2.6.1}\IeC {\k I}diegimo \IeC {\v s}altinio pasirinkimas}{9}
+\contentsline {paragraph}{Tinklo konfig\IeC {\=u}ravimas (Netinstall)}{10}
+\contentsline {paragraph}{Greitasis (A)DSL paleidimas}{10}
+\contentsline {paragraph}{Greitasis bevielio tinklo paleidimas}{10}
+\contentsline {paragraph}{Ar mano bevielio tinklo korta reikalauja Firmware?}{12}
+\contentsline {section}{\numberline {2.7}Laikrod\IeC {\v z}io nustatymas}{13}
+\contentsline {section}{\numberline {2.8}Kietojo disko paruo\IeC {\v s}imas}{13}
+\contentsline {paragraph}{Svarbu}{13}
+\contentsline {paragraph}{Svarbu}{13}
+\contentsline {paragraph}{Pastaba}{13}
+\contentsline {paragraph}{Pastaba}{14}
+\contentsline {subsection}{\numberline {2.8.1}Kietojo disko skaldymas}{14}
+\contentsline {paragraph}{Skirstinio informacija}{14}
+\contentsline {paragraph}{Swap skirstinys}{14}
+\contentsline {paragraph}{Pastaba}{15}
+\contentsline {paragraph}{Skirstini\IeC {\k u} schema}{15}
+\contentsline {paragraph}{Pastaba}{16}
+\contentsline {paragraph}{Kokie turi b\IeC {\=u}ti mano skirstini\IeC {\k u} dyd\IeC {\v z}iai?}{16}
+\contentsline {paragraph}{Skirstini\IeC {\k u} k\IeC {\=u}rimas su cfdisk}{17}
+\contentsline {subsection}{\numberline {2.8.2}Direktorij\IeC {\k u} priri\IeC {\v s}imas}{17}
+\contentsline {paragraph}{Fail\IeC {\k u} sistemos tipai}{17}
+\contentsline {paragraph}{Pastaba}{18}
+\contentsline {paragraph}{Pastaba apie \IeC {\v z}urnalo palaikym\IeC {\k a}}{18}
+\contentsline {paragraph}{T\IeC {\k e}siam...}{18}
+\contentsline {paragraph}{Pastaba}{19}
+\contentsline {section}{\numberline {2.9}Paket\IeC {\k u} pasirinkimas}{19}
+\contentsline {paragraph}{Pastaba}{19}
+\contentsline {paragraph}{Pastaba}{19}
+\contentsline {section}{\numberline {2.10}Paket\IeC {\k u} \IeC {\k i}diegimas}{19}
+\contentsline {section}{\numberline {2.11}Sistemos konfig\IeC {\=u}ravimas}{20}
+\contentsline {paragraph}{Pastaba}{20}
+\contentsline {paragraph}{Ar \IeC {\k i}diegimo programa gali tai atlikti automatizuotai?}{20}
+\contentsline {subsection}{\numberline {2.11.1}/etc/rc.conf}{20}
+\contentsline {subsubsection}{LOCALIZATION sekcija}{20}
+\contentsline {subsubsection}{HARDWARE sekcija}{21}
+\contentsline {subsubsection}{NETWORKING sekcija}{22}
+\contentsline {subsubsection}{DEAMONS sekcija}{23}
+\contentsline {subsubsection}{Apie DEAMONS}{23}
+\contentsline {subsubsection}{/etc/fstab}{24}
+\contentsline {subsubsection}{/etc/fstab pavyzdys}{24}

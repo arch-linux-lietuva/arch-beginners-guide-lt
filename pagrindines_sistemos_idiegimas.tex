@@ -922,3 +922,213 @@ USECOLOR="yes"
 \end{verbatim}
 
 \subsubsection{HARDWARE sekcija}
+
+\begin{itemize}
+  \item \textbf{MOD$\_$AUTOLOAD=}: Jeigu nustatysite į ``Yes'', tuomet
+    naudosite \textbf{udev} automatiniam kompiuterio geležies
+    aptikimui ir reikiamo modulio pakrovimui į sistemos
+    branduolį. Jeigu nustatysite ``No'' viskas priklausys tik nuo Jūsų
+    pačių savo kompiuterio žinių. Gali kilti būtinybė net kompiliuoti
+    savo branduolį, modulius ir kt.
+  \item \textbf{MOD$\_$BLACKLIST=}: Sekanti eilutė buvo pašalinta iš
+    palaikymo sąrašo. Kaip alternatyva šiuo metu yra naudojama
+    \textbf{MODULES=} eilutė, kuri nurodoma žemiau.
+  \item \textbf{MODULES=}: Vartotojo nustatomi papildomi
+    moduliai. Jeigu sistema turi floppy įrenginį, reikia pridėti
+    ``floppy''. Jeigu naudosite ``loopback'' failų sistemas, tai
+    galite pridėti ``loop''. Jeigu nenorite, jog tam tikras modulis
+    pasikrautų automatiškai ( tai gali kilti, jeigu Jums reikės
+    naudoti kitas tvarkykles, negu Jums užkrauna \textbf{udev} ), prie
+    modulio pavadinimo pridėkite šauktuką (!). Tokiu atveju,
+    \textbf{udev} bus priverstas nekrauti nurodyto modulio į
+    branduolį. 
+
+    Kaip pavyzdį galime pateikti užblokuotą \textsl{pcspeaker}:
+
+    \begin{verbatim}
+MODULES=(!snd_pcsp !pcspkr loop)
+    \end{verbatim}
+\end{itemize}
+
+\subsubsection{NETWORKING sekcija}
+
+\begin{itemize}
+  \item \textbf{HOSTNAME=}: Hostname galite pasirinkti tokį, koks Jums
+    patinka. Tai yra Jūsų kompiuterio vardas tinkle. Kokį vardą
+    bepasirinktumėt, svarbiausią, jį įtraukti ir į
+    \textsl{/etc/hosts}.
+  \item \textbf{eth0=}: Sekantis punktas verčiasi kaip 'Ethernet, card
+    0'. Jeigu Jūs turite \textbf{statinį IP}, pridėkite prie sekančios
+    eilutės savo IP adresą, netmask ir broadcast adresą. Jeigu Jūs
+    naudojate \textbf{DHCP}, prie sekančios eilutės parašykite tik
+    dhcp ( eth0=''dhcp'' ) ir Jums tinklas bus sukonfigūruotas
+    automatiškai.
+  \item \textbf{INTERFACES=}: Čia galite nurodyti savo
+    sąsajas. Keletas sąsajų turi būti atskirtos tarpu, kaip
+    pavyzdžiui:
+    \begin{verbatim}
+(eth0 eth1 wlan0)
+    \end{verbatim}
+  \item \textbf{gateway=}: Jeigu naudojate \textbf{statinį IP},
+    nurodykite savo getaway adresą. Jeigu naudojate \textbf{DHCP}
+    galite praleisti sekančią eilutę. Tačiau kai kurie vartotojai
+    nurodė, jog ir naudojant DHCP, reikia nurodyti savo
+    getaway. Pirma, pabandykite nieko nenurodyti, o jeigu prie tinklo
+    kompiuteris vistiek nesijungia - nurodykite savo getaway.
+  \item \textbf{ROUTES=}: Jeigu naudojate \textbf{statinį IP},
+    pašalinkite \textbf{!} prieš 'getaway'. Jeigu naudojate
+    \textbf{DHCP}, galite palikti sekantį kintamąjį
+    užkomentuotą. Tačiau, vėl gi, jeigu Jūsų kompiuteris neprisijungs
+    prie interneto, naudokite statinio IP nustatymus. 
+\end{itemize}
+
+Pavyzdys naudojant dinaminį IP ( \textbf{DHCP} ):
+
+\begin{verbatim}
+HOSTNAME="laptop"
+eth0="dhcp"
+INTERFACES=(eth0)
+gateway="default gw 192.168.0.1"
+ROUTES=(!gateway)
+\end{verbatim}
+
+Pavyzdys naudojant \textbf{statinį} IP:
+
+\begin{verbatim}
+HOSTNAME="laptop"
+eth0="eth0 192.168.0.2 netmask 255.255.255.0 broadcast 192.168.0.255"
+INTERFACES=(eth0)
+gateway="default gw 192.168.0.1"
+ROUTES=(gateway)
+\end{verbatim}
+
+Pakoreguokite \textsl{/etc/resolv.conf} nurodydami DNS
+serverius. Pavyzdžiui:
+
+\begin{verbatim}
+search my.isp.net
+nameserver 192.168.1.1
+nameserver 192.168.1.2
+nameserver 192.168.1.3
+\end{verbatim}
+
+Kai kurie procesai gali perrašyti \textsl{/etc/resolv.conf}
+turinį. Pavyzdžiui, pagal numatytus nustatymus Arch Linux naudoja
+\textbf{dhcpcd} DHCP klientą, kuris gali perrašyti bylos turinį, kai
+yra paleidžiamas. Kai kurie metodai gali išsaugoti nuo perrašymo
+sekančią bylą. Pavyzdžiui, galima nurodyti \textbf{dhcpcd}
+konfigūracinėje byloje, kad programa neperrašinėtų
+\textsl{/etc/resolv.conf} bylos turinį. Tam, tiesiog reikia pridėti
+\textsl{/etc/dhcpcd.conf} bylos turinio pabaigoje:
+
+\begin{verbatim}
+nohook resolv.conf
+\end{verbatim} 
+
+\subsubsection{DEAMONS sekcija}
+
+Sekantis masyvas yra paprastas skriptų sąrašas, kurie yra
+\textsl{/etc/rc.d} direktorijoje. Šioje eilutėje galima nurodyti kokie
+būtent skriptai bus paleisti sistemos krovimo metu ( taip pat ir jų
+eilė ). Asinchroninis paleidimas taip pat palaikomas ( tereikia prie
+skripto pridėti '@' ) ir jis labai paspartina sistemos krovimą.
+
+\begin{verbatim}
+DAEMONS=(network @syslog-ng netfs @crond)
+\end{verbatim}
+
+\begin{itemize}
+  \item Jeigu prie skripto pavadinimo pridėti šauktuką (!), tai
+    skriptas nebus paleistas.
+  \item Jeigu prie skripto pavadinimo pridėti sraigę (@), tai skriptas
+    bus paleistas asinchroniniu būdu. Paleidimo eilė nelauks, kol
+    skriptas sėkmingai arba nesėkmingai bus užbaigtas, o tęs krovimą toliau.
+  \item Jeigu į sistemą buvo įdiegtas naujas servisas ( tarkim 'httpd'
+    ), galite pridėti jį prie DAEMONS sekcijos ir kiekvieną kartą
+    sistema paleis 'httpd' ( apache2 ) jos krovimo metu. 
+\end{itemize}
+
+\subsubsection{Apie DEAMONS}
+
+Deamons eilutė turi būti pakoreguota pagal kiekvieno vartotojo
+poreikius, tačiau, dabar būtina truputi pakalbėti apie deamons'us. 
+
+Deamon yra programa, kuri yra vykdoma šešėlyje ir kuri laukia
+pertraukties. Kai įvyksta pertrauktis - deamon siūlo savo sprendimus
+pertraukčiai apdoroti. Geras pavyzdys yra web serveris, kuris laukia,
+kol į jį bus padaryta kreiptis ( 'httpd' ) arba ssh serveris, kuris
+laukia, kol į jį bus padaryta kreiptis ( 'sshd' ). Tokios programos
+yra pilnos, tačiau yra programų, kurių darbą ne taip lengva
+pastebėti. Kaip pavyzdį galima nurodyti programą, kuri rašo visus
+pranešimus į sisteminį žurnalą ( 'syslog', 'metalog' ) ir programos,
+kurios suteikia grafinį priėjimą prie sistemos ( 'gdm', 'kdm' ). Visos
+sekančios programos gali būti įtrauktos į deamon sąrašą ir paleistos
+sistemos krovimo metu. Vėliau pateiksime tam tikras, naudingas deamon
+programas. 
+
+Istoriškai, terminas \textsl{deamon} prigijo dėka MIT projekto MAC
+programuotojų. Jie pasiskolino pavadinimą iš \textsl{Maxwell demon},
+įsivaizduojamą sutvėrimą iš įžymaus ir sudėtingo eksperimento, kuris
+visuomet dirbą šešėlyje, rikiuodamas molekules. *nix sistemos
+pasisavino šitą terminą ir pakeitė jo kilmę kaip į žodžių junginį
+``\textbf{d}isk \textbf{a}nd \textbf{e}xecution \textbf{mon}itor''.
+
+
+\subsubsection{/etc/fstab}
+
+\textbf{Fstab} ( trumpinimas iš žodžių \textbf{f}ile \textbf{s}ystems
+\textbf{tab}le ) yra dalis sistemos konfigūracijos, kuriame nurodomi
+visi galimi diskų ir disko skirstinių elgsena sistemoje, t.y. prie
+kurios direktorijos ir kokiomis teisėmis turi būti pririšti diskai,
+bei jų skirstiniai. Byla \textsl{/etc/fstab} dažniausiai naudojama
+\textbf{mount} programos. Mount komanda paima disko skirstinio failo
+sistemą ir prijungia ją prie sisteminės direktorijų
+hierarchijos. Paleidimo metu, kuomet praeina 3/4 viso paleidimo,
+\textbf{mount -a} komanda perskaito \textsl{/etc/fstab} bylą ir pagal
+perskaitytus nustatymus prijungia nurodytus skirstinius prie
+direktorijų hierarchijos. Jeigu prie skirstinio yra parašyta
+\textsl{noauto}, sistemos krovimo metu \textbf{mount -a} skirstinio
+niekur nejungs.
+
+\subsubsection{/etc/fstab pavyzdys}
+
+\begin{verbatim}
+# <file system> <dir>     <type>   <options>               <dump>    <pass>
+none            /dev/pts  devpts   defaults                  0         0
+none            /dev/shm  tmpfs    defaults                  0         0
+/dev/sda1       /         jfs      defaults,noatime          0         1
+/dev/sda2       /var      reiserfs defaults,noatime,notail   0         2
+/dev/sda3       swap      swap     defaults                  0         0
+/dev/sda4       /home     jfs      defaults,noatime          0         2
+\end{verbatim}
+
+\begin{itemize}
+  \item \textbf{<file system>}: nusako disko skirstinį arba nutolusi
+    failų sistemą su kuria bus dirbama. 
+  \item \textbf{<dir>}: nusako direktoriją, prie kurios bus pririštas
+    ankščiau nurodytas disko skirstinys arba nutolusi failų
+    sistemą. Jeigu skirstinys yra \textsl{swap} tipo, čia turi būti
+    nurodytas 'swap'. Verta pastebėti, jog swap skirstiniai realiai
+    nėra prijungiamos prie direktorijų hierarchijos.
+  \item \textbf{<type>}: nusako failų sistemos tipą. Linux branduolys
+    palaiko labai daug failų sistemų. Galite patikrinti kokias failų
+    sistemas palaiko sisteminis branduolys, peržiūrėję
+    \textsl{/proc/filesystems} direktoriją. Įrašas 'swap', nurodo, jog
+    bus dirbama su swap tipo skirstiniu ar byla. Įrašas 'ignore'
+    nurodo, jog sekanti eilutė turi būti ignoruojama. Toks įrašas
+    naudingas tuomet, kai tenka laikinai atjungi kokį nors išorinį ar
+    vidinį diską.
+  \item \textbf{<options>}: nusako parinktis, kurios bus įvykdytos
+    prijungimo metu. Eilutė formatuojama kaip parinkčių sąrašas, kur
+    kiekviena parinkti atskiriama kablelių, be jokių tarpų. Pagrinde,
+    eilutė turi susidėti iš prijungimo tipo ir dar papildomos
+    parinktys, kurios priklauso nuo failų sistemos tipo. Detalesnei
+    dokumentacijai peržiūrėkite 'man mount'.
+  \item \textbf{<dump>}: nusako kokia failų sistema turi būti perkelta
+    į 'sąvartyną'. Dump yra savotiška atsarginių kopijų darymo
+    tarnyba. Jeigu penktas laukas nėra nurodomas, skirstinys nurodomas
+    kaip nereikalaujantis atsarginių kopijų darymo. 
+  \item \textbf{<pass>}: nusako failų sistemos tikrinimo prioritetą
+    sistemos krovimosi metu. Pagrindinė failų sistema turi būti
+    nurodoma 1, o visos kitos turi turėti nurodymą 0 arba 2. 
+\end{itemize}
