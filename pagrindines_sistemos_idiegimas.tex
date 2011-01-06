@@ -1208,6 +1208,263 @@ HOOKS="base udev autodetect pata scsi sata usb filesystems keymap usbinput"
 
 \subsection{/etc/resolv.conf ( statiniam IP )}
 
-  
+  % TODO: normalus vertimas
+  Resolver'is yra sąrašas kelių, kurie yra aprašyti C biblioteka. Jie
+  suteikia priėjimą prie interneto domain name systems ( DNS ). Viena
+  iš pagrindinių DNS užduočių yra konvertuoti domeno vardą į ip
+  adresą. Taip internetas padaromas žymiai draugiškesnis
+  vartotojui. Resolverio konfigūracinėje byloje,
+  \textsl{/etc/resolv.conf} pateikiama informacija apie adresus,
+  kuriais resolveris vadovaujasi pirmiausiai.
+
+  Jeigu naudojate statinį IP, turite nurodyti savo DNS
+  serverius. Tarkim, jeigu naudojate OpenDNS:
+
+  \begin{verbatim}
+nameserver 208.67.222.222
+nameserver 208.67.220.220
+  \end{verbatim}
+
+  Jeigu naudojate maršrutizatorių, Jums reikia nurodyti DNS'us jame, o
+  resolverio konfigūracinėje byloje tik padaryti nukreipimą iki
+  maršrutizatoriaus.
+
+  \begin{verbatim}
+nameserver 192.168.1.1
+  \end{verbatim}
+
+  Jeigu naudojate DHCP, taip pat galite nurodyti DNS serverius, tačiau
+  tai nėra būtina, kadangi visos operacijos atliekamos automatiškai. 
 
 \subsection{/etc/hosts}
+
+  Sekanti konfigūracinė byla susieja IP adresus su tinklo vardais, bei
+  trumpiniais. Kiekviena konfigūracinė eilutė turi savyje turėti tokią
+  informaciją:
+
+  \begin{verbatim}
+    <IP-adresas> <tinklo-vardas> [trumpiniai..]
+  \end{verbatim}
+
+  Pridėkite savo tinklo vardą, priklausomai nuo
+  \textsl{/etc/resolv.conf} nurodytam vardui:
+
+  \begin{verbatim}
+127.0.0.1 localhost.localdomain localhost tinklo-vardas
+  \end{verbatim}
+
+  Jeigu naudojate statinį IP, pridėkite dar vieną eilutę, kuri
+  susidėtų iš:
+
+  \begin{verbatim}
+192.168.1.100 tinklo-vardas.domain.org tinklo-vardas
+  \end{verbatim}
+
+\subsection{/etc/hosts.deny ir /etc/hosts.allow}
+
+  Pakoreguokite sekančias konfigūracines bylas, jeigu tai yra
+  būtina. Toks poreikis gali iškilti tuomet, jeigu naudosite
+  ssh. Pagal numatytą konfigūraciją, kiekvienas į sistemą ateinantis
+  prašymas prisijungti prie jūsų kompiuterio bus
+  atmestas. Pakoreguokite \textsl{/etc/hosts.allow} bylą su tam
+  tikrais parametrais:
+
+  \begin{itemize}
+    \item kiekvienas gali prisijungti
+
+      \begin{verbatim}
+sshd: ALL
+      \end{verbatim}
+
+    \item apriboti prisijungimą tik iš vieno IP
+
+      \begin{verbatim}
+sshd: 192.168.0.1
+      \end{verbatim}
+
+    \item apriboti prisijungimą tik iš vietinio LAN tinklo
+
+      \begin{verbatim}
+sshd: 192.168.0.
+      \end{verbatim}
+
+    \item apriboti prisijungimą tik iš IP sąrašo
+
+      \begin{verbatim}
+sshd: 10.0.0.0/255.255.255.0
+      \end{verbatim}
+  \end{itemize}
+
+  Jeigu neplanuojate naudoti ssh, palikite sekančią konfigūracinę bylą
+  nekeistas. Tai tik pridės sistemai saugumo.
+
+\subsection{/etc/locale.gen}
+
+  Komanda \textbf{/usr/sbin/locale-gen} perskaito duomenis iš
+  \textsl{/etc/locale.gen} ir sugeneruoja specifines lokales. Lokalės
+  naudojamos \textbf{glibc} ir bet kokia kita lokale programa ar
+  biblioteka teksto atvaizdavimui.
+
+  Pagal numatytus nustatymus, byla lieka tuščia, su užkomentuota
+  dokumentacija. Konfigūracija atliekama tik vieną
+  kartą. \textbf{locale-gen} yra paleidžiamas kiekvieną kart, kai tik
+  yra atnaujinamas \textbf{glibc}, generuodamas visas reikiamas
+  lokales, kurios yra aprašytos \textsl{/etc/locale.gen} byloje. 
+
+  Pasirinkite reikiamas lokales pašalindami komentaro ženklą ($\#$)
+  eilutės pradžioje, pavyzdžiui:
+
+  \begin{verbatim}
+en_US ISO-8859-1
+en_US.UTF-8
+  \end{verbatim}
+  
+  Įdiegimo programa paleis locale-gen skriptą ir sugeneruos reikiamas
+  lokales. Tolimesnėje sistemos naudojime, galite keisti lokales
+  konfigūracinę bylą ir sugeneruoti lokales su \textbf{locale-gen}
+  komanda. Būtina sąlyga, jog skriptas turi būti paleistas su root
+  vartotojo teisėmis.
+
+\subsection{Pacman veidrodis}
+
+  Pasirinkti reikiamą \textbf{pacman} veidrodį.
+
+  Šiuo metu lietuviškų pacman veidrodžių nėra.
+
+  \begin{itemize}
+    \item Oficialus \textsl{archlinux.org} veidrodis yra limituotas
+      iki 50 KBps greičio, tad, jeigu turite greitesnį internetą ir
+      nemėgstate laukti - rekomenduojama pasirinkti kitą veidrodžio šaltinį.
+  \end{itemize}
+
+  Knygos rašymo metu, Arch Linux Lietuva derina veidrodžio paleidimo
+  galimybes VGTU Elektronikos fakultete.
+
+\subsection{Root slaptažodis}
+
+  Slaptažodžio pasirinkimas root vartotojui turi būti labai atsakingas
+  darbas. Reikia jį pasirinkti kiek įmanoma kompleksinį, tačiau
+  kombinacija turi likti įmanoma atsiminti.
+
+  Grįžkite į pagrindinį menu ir tęskite su bootloader įdiegimu.
+
+\subsection{Pabaiga}
+
+  Kuomet pasirinksite ``Done'', sistema perkompiliuos visus reikiamus
+  atvaizdus, remiantis konfigūracine informacija. Šitas procesas gali
+  šiek tiek užtrukti. Kuomet viskas bus užbaigta, įdiegimo programa
+  perkels į pagrindinį menu.
+
+\section{Bootloader įdiegimas}
+
+  Kadangi įdiegimas vyksta tuščioje sistemoje, mums prireiks sistemos
+  bootloader ( lietuviškai tai verčiama kaip 'paleidyklė' ). GNU GRUB
+  yra rekomenduojamas pasirinkimas. Kaip alternatyva, galima
+  pasirinkti Lilo arba Syslinux.
+
+\subsection{GRUB}
+
+  Numatyti GRUB nustatymai, kurie yra \textsl{/boot/grub/menu.lst},
+  turėtų tenkinti kiekvieno pradedančiojo vartotojo poreikius ir
+  sistema tikrai pasikraus, jeigu paliksite konfigūracinę bylą
+  nepaliesta. Tačiau būtina patikrinti ar visi nustatymai yra
+  teisingi. Konfigūravimo darbus ir eksperimentus su sekančią bylą
+  galima nukelti į po-sistemos įdiegimo darbus.
+
+  Įvykiams užbėgant už akių, prie \textsl{kernel} eilutės galima
+  pridėti \textit{vga=<numeris>} eilutę. Sekanti opcija, leis
+  terminalui dirbti didesnėje raiškoje ir tai palengvina vartotojo
+  darbą su terminalu. Lentelė su numeriais ir ekrano raiška yra
+  pateikiamos \textsl{/boot/grub/menu.lst} byloje.
+
+  Pavyzdys:
+
+  \begin{verbatim}
+title  Arch Linux (Main)
+root   (hd0,0)
+kernel /boot/vmlinuz26 root=/dev/sda1 ro
+initrd /boot/kernel26.img
+  \end{verbatim}
+
+  Pavyzdys, kuomet \textsl{/boot} direktorija yra atskirame
+  skirstinyje:
+
+  \begin{verbatim}
+title  Arch Linux (Main)
+root   (hd0,0)
+kernel /vmlinuz26 root=/dev/sda3 ro
+initrd /kernel26.img
+  \end{verbatim}
+
+  Paaiškinimai:
+
+  \begin{itemize}
+    \item Eilutė 1: \textsl{title} yra tekstas, kuris bus rodomas kaip
+      menu pasirinkimas. ``Arch Linux (Main)'' bus pavaizduotas menu
+      kaip galimas pasirinkimas.
+    \item Eilutė 2: \textsl{root} GRUB root skirstinys. Tai yra diskas
+      arba disko skirstinys, kur galima rasti \textsl{/boot}
+      direktoriją. Arba tiksliau, kur galima rasti GRUB'o stage2
+      bylą. GRUB numeracija prasideda nuo 0, ir naudoja hdx,y formatą.
+
+      Pavyzdyje, \textsl{/boot} guli pirmame diske, pirmame
+      skirstinyje, arba (hd0,0)
+
+    \item Eilutė 3: \textsl{kernel}. Sekanti eilutė nurodo:
+
+      \begin{itemize}
+        \item kernel ( sistemos branduolio ) kelią ir pavadinimą,
+          priklausomai nuo GRUB'o root.
+
+          Pavyzdyje, \textsl{/boot} ir \textbf{vmlinuz26} yra tame
+          pačiame skirstinyje, kaip ir pagrindinė failų direktorija,
+          tai absoliutus kelias iki sisteminio branduolio ( kernel )
+          yra \textbf{/boot/vmlinuz26}. 
+
+          Kuomet \textsl{/boot} yra atskirame skirstinyje, absoliutus
+          kelias iki sisteminio branduolio būtų tiesiog
+          \textbf{/vmlinuz26}.
+
+        \item root= argumentas nusako disko skirstinį, kuriame yra
+          pagrindinė bylų direktorija (/). Arba tiksliau, tai disko
+          skirstinys, kuriame galime rasti \textsl{/sbin/init}.
+
+        \item Įsiminti sekančių argumentų tvarka galima taip: pirmas
+          argumentas nusako GRUB'ui kur galima rasti sisteminį
+          branduolį, o antras argumentas nusako sisteminiam
+          branduoliui kur galima rasti pagrindinę bylų direktoriją. 
+
+        \item Paskutinė argumentas nusako sisteminio branduolio opcijas.
+
+          Mūsų pavyzdys, \textbf{ro} reiškia, kad sistemos krovimo
+          metu, bylos sistema yra prijungiama prie sistemos tik su
+          skaitymo teisėmis.
+
+      \end{itemize}
+
+    \item  Eilutė 4: \textbf{initrd} Kelias ir bylos pavadinimas
+      vidinei RAM bylų sistemai, priklausomai nuo GRUB'o pagrindinės
+      direktorijos. Pavyzdyje, viskas vyksta tam pačiam diske ir tam
+      pačiam skirstinyje, taigi pilnas kelias yra
+      \textsl{/boot/kernel26.img}. 
+
+      Jeigu viskas vyktų atskiruose diskuose, ar skirstiniuose,
+      absoliutus kelias būtų tiesiog \textsl{/kernel26.img}.
+
+  \end{itemize}
+
+  Įdiekite GRUB sistemos bootloaderį į pagrindinį disko krovimo
+  parametrą ( pavyzdyje tai yra sda ).
+
+\section{Perkrovimas}
+
+  Štai ir viskas. Bazinės sistemos konfigūravimas ir įdiegimas
+  užbaigtas. Išeikite iš įdiegimo programos ir perkraukite savo
+  kompiuterį:
+
+  \begin{verbatim}
+# reboot
+  \end{verbatim}
+
+  Kuomet sistema baigs išjungimo operacijas - išimkite įdiegimo diską
+  arba įdiegimo laikmeną.
