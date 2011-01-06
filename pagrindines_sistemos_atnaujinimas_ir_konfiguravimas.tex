@@ -1,0 +1,356 @@
+\chapter{Pagrindinės sistemos atnaujinimas ir konfigūravimas}
+
+  Šviežia sistema pradės krautis ir krovimas bus užbaigtas tuomet, kai
+  pasirodys prisijungimo sąsaja ( prompt ).
+
+  \textbf{Sveikiname, ir sveiki atvykę į naują Arch Linux pagrindinę
+    sistemą!}
+
+  Nauja Arch Linux sistema ir pilnavertė GNU/Linux aplinka, kuri yra
+  paruošta konfigūravimui. Nuo šio žingsnio, Jūs esate pats savo
+  sistemos kalvis. Jūsų sistema bus tokia, kokia Jums yra reikalinga.
+
+  Prisijunkite kaip root vartotojas. Toliau tęsime su pacman ir
+  sistemos atnaujinimu.
+
+  \paragraph{Pastaba} Yra galimos virtualios konsolės. Jas galite
+  pasiekti per Alt+F1 ... Alt+F6.
+
+  \section{Žingsnis 1: Tinklo konfigūravimas}
+
+    \textsl{Sekantis skyrius bus jums vadovo pozicijoje konfigūruojant
+    tinklą, jeigu jis jums neveikia.}
+
+    Jeigu įdiegimo metu teisingai buvo atliktas tinklo konfigūravimas,
+    tinklas jums turėtų veikti. Tai galima patikrinti su ping komanda:
+
+    \begin{verbatim}
+ping -c www.google.lt
+    \end{verbatim}
+
+    \textsl{Jeigu tinklas yra pajungtas, tęskite su Žingnis 2.}
+
+    Jeigu po ping bandymo ateina pranešimas apie ``unknown host'',
+    tinklas nėra teisingai sukonfigūruotas. Pirmą, ką reiktų padaryti,
+    tai dar kartą patikrinti konfigūracines bylas:
+
+    \begin{itemize}
+      \item \textbf{/etc/rc.conf} Ypač HOSTNAME= bei NETWORKING
+        sekcijas.
+      \item \textbf{/etc/hosts} Patikrinkite nustatymų formatą.
+      \item \textbf{/etc/resolv.conf}, jeigu naudojate statinį IP
+        adresą. Jeigu naudojate DHCP, byla yra sukuriama ir ištrinama
+        dinamiškai. 
+    \end{itemize}
+
+    \subsection{LAN tinklas}
+
+      Patikrinkite savo tinklo sąsajas su
+
+      \begin{verbatim}
+# ifconfig -a
+      \end{verbatim}
+
+      Įvykdžius šią komandą, bus pateiktos visos tinklo sąsajos,
+      kurias sistema atpažino. Turėtumėt pamatyti kažką panašaus į
+      \textsl{eth0} arba \textsl{eth1}.
+
+      \begin{itemize}
+        \item Statinis IP
+
+          Jeigu yra būtina, galima nustatyti savo statinį IP:
+
+          \begin{verbatim}
+# ifconfig eth0 <ip adresas> netmask <netmask> up
+          \end{verbatim}
+
+          Ir numatytą gateway su:
+
+          \begin{verbatim}
+# route add default gw <gateway-ip-adresas>
+          \end{verbatim}
+
+          Patikrinkite ar \textsl{/etc/resolv.conf} byloje yra įrašyti
+          DNS serveriai ir pridėkite juos, jeigu jų nėra. Patikrinkite
+          savo tinklą su ping komanda ir jeigu tinklas atsirado -
+          įveskite viską į savo \textsl{rc.conf} bylą, kaip aprašyta
+          aukščiau, pirmame skyriuje.
+
+        \item DHCP
+
+          Jeigu naudojate DHCP, pabandykite tiesiog:
+
+          \begin{verbatim}
+# dhcpcd eth0
+          \end{verbatim}
+
+          Jeigu tai suveiks - įveskite reikiamus konfigūracijos
+          parametrus į \textsl{/etc/rc.conf}, kaip nurodyta pirmoje dalyje.
+      \end{itemize}
+
+    \subsection{Belaidis tinklas}
+
+      \begin{itemize}
+
+        \item Patikrinkite ar reikiama tvarkyklė sukūrė naudojamą
+          bevielio tinklo sąsają:
+
+          \begin{verbatim}
+# iwconfig
+          \end{verbatim}
+
+          Komanda turėtų parodyti esamas bevielio tinklo sąsajas. Jo
+          pavadinimai gali būti \textsl{wlan0}, \textsl{wlan1} arba
+          \textsl{eth1}.
+
+        \item Įjunkite norimą sąsają su \textsl{ifconfig <sąsaja>},
+          pavyzdžiui:
+
+          \begin{verbatim}
+# ifconfig wlan0 up
+          \end{verbatim}
+
+          \paragraph{Pastaba} Jeigu išmes klaidos pranešimą
+          'SIOCSIFFLAGS: No such file or directory', tai reiškia, jog
+          tinklo plokštei trūksta firmware'o.
+
+        \item Susiekite norimą tinklą su sąsają. Sekantis procesas
+          priklauso nuo tinklo tipo, prie kurio norima prisijungti,
+          tačiau pagrindinis reikalavimas yra žinoti bevielio tinklo
+          ESSID, t.y. tinklo pavadinimą ( pavyzdžiui 'eduroam' ):
+
+          \begin{itemize}
+            \item Pavyzdys, naudojant neužkoduotą tinklą:
+
+              \begin{verbatim}
+# iwconfig wlan0 essid "eduroam"
+              \end{verbatim}
+
+            \item Pavyzdys, naudojant WEP kodavimą ir šešioliktainį
+              raktą:
+
+              \begin{verbatim}
+# iwconfig wlan0 essid "eduroam" key 0241baf34c
+              \end{verbatim}
+
+            \item Pavyzdys, naudojant WEP ir ASCII raktą:
+
+              \begin{verbatim}
+# iwconfig wlan0 essid "eduroam" key s:secret-pass
+              \end{verbatim}
+
+            \item Naudojant WPA, prisijungimas prie tinklo reikalauja
+              truputi daugiau pastangų:
+
+              \begin{verbatim}
+# wpa_passphrase eduroam "slaptazodis" > /etc/wpa_supplicant.conf
+# wpa_supplicant -B -Dwext -i wlan0 -c /etc/wpa_supplicant.conf
+              \end{verbatim}
+
+              \paragraph{Pastaba} Po -D esantis argumentas 'wext' yra
+              tvarkyklės pavadinimas, kuris yra naudojamas sąsajai su
+              bevieliu tinklu.
+
+          \end{itemize}
+
+          Patikrinkite ar tinklas teisingai sukonfigūruotas:
+
+          \begin{verbatim}
+# iwconfig wlan0
+          \end{verbatim}
+
+        \item Kreiptis į bevieli tinklą atliekama paprasčiausiai su
+          \textsl{dhcpcd <sąsaja>}:
+          
+          \begin{verbatim}
+# dhcpcd wlan0
+          \end{verbatim}
+
+        \item Patikrinkite ar tinklas sukonfigūruotas teisingai:
+
+          \begin{verbatim}
+# ping -c www.google.lt
+          \end{verbatim}
+
+          Jeigu viskas buvo atlikta teisingai - tinklas turėtų veikti.
+          
+      \end{itemize}
+
+    \subsection{Proxy serveris}
+
+    Jeigu esate už proxy serverio, pakoreguokite \textsl{/etc/wgetrc}
+    įgalindami \textsl{http$\_$proxy}, bei \textsl{ftp$\_$proxy}. 
+
+    \subsection{Analoginis modemas, ISDN ir DSL (PPPoE)}
+
+      \subsubsection{Analoginis modemas}
+
+      \subsubsection{ISDN}
+
+      \subsubsection{DSL}
+
+    % TODO
+
+  \section{Žingsnis 2: Atnaujinimas su pacman}
+
+    Dabar, kai turime veikiantį priėjimą prie tinklo, galime
+    atnaujinti savo sistemą, pasitelkdami pacman.
+
+    \subsection{Kas yra pacman ?}
+
+    Pacman yra Arch Linux paketų tvarkyklė ( \textbf{pac}kage
+    \textbf{man}ager ). Pacman yra parašytas su C kalba ir nuo
+    pagrindų yra projektuotas kaip lengva, greita ir mažai darbinės
+    atminties reikalaujanti programa. Pacman prižiūri kiekvieną
+    paketą, kuris yra įdiegtas į sistemą: atlieka įdiegimą,
+    pašalinimą, atnaujinimą, rankinių būdų sukompiliuotų paketų
+    įdiegimą, priklausomybių tikrinimą, nuotolinę, bei vidinę paketų
+    paiešką ir kita. Pacman programos pateikiama informacija yra
+    suprantama ir suteikia ETA kiekvieno paketo atsiuntimo metu. Arch
+    naudoja pkg.tar.gz archyvus ir šiuo metu yra vykdomi darbai
+    pereinant prie pkg.tar.xz formato.
+
+    Dabar pacman bus naudojamas atsisiunčiant paketus iš paketų
+    saugyklos ir diegimui į sistemą.
+
+    \subsection{Paketų saugyklos}
+
+      Dabartiniu metu pacman siūlo tokias paketų saugyklos galimybes:
+
+      \subsubsection{[core]} 
+
+        Paprastu principu remiantis, [core] suteikia prieigą tik po
+        vieną įrankį, skirtą atlikti tam tikrą pagrindinės Arch Linux
+        sistemos darbą. GNU toolchan, sisteminis branduolys ( Linux
+        Kernel ), vienas redaktorius, vienas komandinės eilutės
+        klientas ir kt. ( tačiau yra ir keletas išimčių, kaip
+        pavyzdžiui vi ir nano yra pasiekiami [core] saugykloje
+        ). Saugykloje yra tie pagrindiniai paketai, kurie turi būti
+        įdiegti į bet kokią veikiančią sistemą, norint užtikrinti, kad
+        sistema veiktų stabiliai ir patikimai. Tai yra visiškai
+        sistemiškai kritiniai paketai.
+
+        \begin{itemize}
+          \item Pagrindinės sistemos programuotojų palaikomi
+          \item Visi paketai yra binariniai
+          \item Prieinami per pacman
+          \item \textsl{Core} sistemos diegimo atvaizdas susideda vien
+            iš [core] saugykloje saugomų paketų.
+        \end{itemize}
+
+      \subsubsection{[extra]}
+
+        Saugykloje [extra] saugomi visi paketai, kurie nėra būtini
+        bazinėje Arch Linux sistemoje, tačiau jie suteikia pilną Arch
+        Linux darbo aplinką, tad be jų neišsiversti. X, KDE, bei
+        Apache yra saugomas sekančioje saugykloje.
+
+        \begin{itemize}
+          \item Pagrindinės sistemos programuotojų palaikomi
+          \item Visi paketai yra binariniai
+          \item Prieinami per pacman
+        \end{itemize}
+      
+      \subsubsection{[testing]}
+
+        Sekančia saugykla patartina naudotis tik labai patyrusiems
+        vartotojams, todėl šiame vadove jos neapžvelgsime.
+      
+      \subsubsection{[community]}
+
+        Saugykla yra prižiūrima Arch Linux patikimų vartotojų (
+        \textsl{TU} ) ir paprasčiausiai yra binarinis AUR
+        variantas. Jame saugomi binariniai paketai, kurie yra
+        suorganizuoti PKGBUILD pagalba iš AUR, kurie sulaukė
+        daugiausiai balsų ir buvo priimti į saugyklą. Kaip ir
+        kiekviena saugykla, išvardinta aukščiau, [community] galima
+        pasiekti pacman pagalba.
+
+        \begin{itemize}
+          \item TU palaikomi
+          \item Visi paketai yra binariniai
+          \item Prieinami per pacman
+        \end{itemize}
+      
+      \subsubsection{[multilib]}
+
+        Vartotojai, kurie naudoja 64 bitų architektūrą turi poreikį
+        diegti paketus, kurie nėra pritaikyti tokiai
+        architektūrai. Paprasti 32 bitų paketai gali būti naudojami 64
+        bitų versijoje, tačiau sistemoje turi egzistuoti specifinės
+        bibliotekos, kurios ir yra saugomos [multilib] saugykloje. 
+
+        \begin{itemize}
+          \item Pagrindinės sistemos programuotojų palaikomi
+          \item Paketai yra binariniai
+          \item Prieinami per pacman
+        \end{itemize}
+
+        \paragraph{Pastaba} Norint naudotis saugykla, reikia pridėti
+        kelias eilutes į \textsl{/etc/pacman.conf}
+
+        \begin{verbatim}
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+        \end{verbatim}
+
+      \subsubsection{AUR (nepalaikomas)}
+
+        AUR saugomi visi oficialiai nepalaikomi paketai, kurie negali
+        būti pasiekiami per pacman. AUR'e nėra jokių binarinių
+        paketų. Tuo tarpu, AUR suteikia daugiau nei šešiolika
+        tūkstančių PKGBUILD skriptų, kurių pagalba galima labai
+        lengvai sukompiliuoti bet kokį norimą paketą iš pradinio
+        kodo. Kuomet AUR PKGBUILD skriptas surenka pakankamai balsų,
+        jo binarinis variantas yra perkeliamas į [community]
+        saugyklą. Tam taip pat turi pritarti ir \textsl{TU}.
+
+        \begin{itemize}
+          \item TU palaikomi
+          \item Visi PKGBUILD yra skriptai
+          \item Pagal numatytus nustatymus, neprieinamas per pacman
+        \end{itemize}
+
+        Sekančią saugyklą galima pasiekti kitais būdais,
+        t.y. pasitelkiant pacman apgaubtu ( wrapper ).
+
+    \subsection{/etc/pacman.conf}
+
+      Kiekvieno pacman paleidimo metu, jis skaitys
+      \textsl{/etc/pacman.conf}. Konfigūracinė byla yra suskaldyta į
+      du blokus arba saugyklas. Kiekvienas blokas nusako paketų
+      saugyklą, kurią pacman gali naudoti paketų paieškai. Išimtis yra
+      opcijų blokas, kuris nustato globalius kintamuosius.
+
+      Verta pastebėti, jog pagal numatytus nustatymus viskas turi
+      veikti, taigi bylos redagavimas šiame žingsnyje nėra būtinas,
+      tačiau patikrinimas yra rekomenduojamas. 
+
+      \begin{verbatim}
+# nano /etc/pacman.conf
+      \end{verbatim}
+
+      Įjunkite visas norimas saugyklas, pašalindami komentaro ($\#$)
+      ženklą eilutės pradžioje.
+
+      \paragraph{Pastaba} Įsitikinkite, jog atkomentavote tiek
+      saugyklą, kurios pavadinimas apskliaustas laužtiniais
+      skliaustais ([saugyklos-pavadinimas]), tiek ir \textsl{Include} eilutę, kuri seka
+      iškarto po saugyklos pavadinimo. Tai dažna klaida.
+
+    \subsection{/etc/pacman.d/mirrorlist}
+
+      Konfigūracinė byla nusako saugyklų veidrodžius bei prioritetus.
+
+    \subsection{Mirrorcheck sistemos naujumui tikrinimui}
+
+    \subsection{Paketų ignoravimas}
+
+    \subsection{Konfigūracinių bylų ignoravimas}
+
+    \subsection{Supažindinimas su pacman}
+
+    \section{Sistemos atnaujinimas}
+
+      \subsection{Arch dabartinės versijos modelis}
+
