@@ -342,15 +342,183 @@ Include = /etc/pacman.d/mirrorlist
 
       Konfigūracinė byla nusako saugyklų veidrodžius bei prioritetus.
 
+      \subsubsection{Veidrodžių sąrašo generavimas pasitelkiant
+        rankmirrors skriptą ( nebūtina )}
+
+        Arch Linux projekte yra \textsl{/usr/bin/rankmirrors}
+        skriptas, kuris bando išrinkti arčiausiai esančius
+        veidrodžius, kurie yra atkomentuoti
+        \textsl{/etc/pacman.d/mirrorlist} byloje. Greitesni
+        veidrodžiai dramatiškai pakeis pacman darbą, bei absoliutų
+        Arch Linux naudojimą. Skriptas gali būti paleidžiamas
+        periodiškai, turint galvoje, kad veidrodžių apkrova laikui
+        bėgant kinta. Reikia pridurti, kad \textsl{rankmirrors}
+        skriptas netestuoja veidrodžių greitį. Tačiau tai galima
+        patikrinti su kito tipo įrankiais - \textsl{wget} arba
+        \textsl{rsync}. Galiausiai, po visų testų, galima surinkti
+        geriausių veidrodžių rinkinį į
+        \textsl{/etc/pacman.d/mirrorlist}.
+
+      \subsubsection{Priverstinis pacman paketų atnaujinimas}
+
+        Įvykdykite sekančią komandą:
+
+        \begin{verbatim}
+# pacman -Syy
+        \end{verbatim}
+
+        Siunčiant du \textsl{--refresh} arba \textsl{-y} argumentus
+        verčia pacman atnaujinti visus paketus, nors sistemos
+        duomenimis, jie yra naujausios versijos. Vykdyti
+        \textsl{pacman -Syy} kiekvieną kartą, kuomet yra keičiamas
+        veidrodis, yra gera praktika. Taip galima išvengti labai daug
+        galvos skausmų.
+
+        Įdiegite curl, pasitelkiant pacman:
+
+        \begin{verbatim}
+# pacman -S curl
+        \end{verbatim}
+
+        Nueikite iki \textsl{/etc/pacman.d} direktorijos:
+
+        \begin{verbatim}
+# cd /etc/pacman.d/
+        \end{verbatim}
+
+        Padarykite atsarginę \textsl{mirrorlist} kopiją:
+
+        \begin{verbatim}
+# cp mirrorlist mirrorlist.backup
+        \end{verbatim}
+
+        Pakoreguokite \textsl{mirrorlist.backup} ir atkomentuokite
+        visus veidrodžius, kurie geografiškai yra arčiausiai jūsų
+        kompiuterio
+
+        \begin{verbatim}
+# nano mirrirlist.backup
+        \end{verbatim}
+
+        Dabar teliko tik paleisti \textsl{rankmirrors} skriptą, kuris
+        skaitytų \textsl{mirrorlist.backup} bylą su \textsl{-n}
+        argumentu ir perduoti visą srautą į naują \textsl{mirrorlist}
+        bylą:
+
+        \begin{verbatim}
+# rankmirrors -n 6 mirrorlist.backup > mirrorlist
+        \end{verbatim}
+
+        \paragraph{Pastaba} -n 6 nusako parinkti šešis arčiausius
+        veidrodžius.
+
+        Priverstinai paleiskite pacman atnaujinti visus paketus:
+
+        \begin{verbatim}
+# pacman -Syy
+        \end{verbatim}
+
     \subsection{Mirrorcheck sistemos naujumui tikrinimui}
 
-    \subsection{Paketų ignoravimas}
+      % TODO
+    
+      Kai kurie oficialūs veidrodžiai gali turėti ir pasenusių
+      paketų. Arch Linux mirrorcheck praneša apie įvairius aspektus,
+      kurie gali kilti veidrodžiams - tinklo problemos, duomenų
+      surinkimo problemos, paskutinis paketų atnaujinimo laikas ir kt.
+
+      Gerai yra tikrinti savo \textsl{/etc/pacman.d/mirrorlist} ir
+      stebėti, ar nurodyti veidrodžiai yra naujausi. 
+
+    \subsection{Paketų atnaujinimo ignoravimas}
+
+      Po \textsl{pacman -Syu} kiekvienas sistemos paketas bus
+      atnaujintas. Tačiau galima ir priversti pacman neatnaujinti tam
+      tiktų paketų. Tipinė situacija yra ta, jog paketo atnaujinimas
+      tiesiog sustabdys stabilų sistemos veikimą. Tokiu atveju yra du
+      pasirinkimai: nurodyti pacman kokius paketus praleisti su
+      \textsl{--ignore} argumentu arba laikinai nurodyti praleidžiamus
+      paketus \textsl{/etc/pacman.conf} byloje, \textsl{IgnorePkg}
+      masyve. Išvardinkite kiekvieną paketą eilute, palikdami tarpą
+      tarp kiekvieno paketo:
+
+      \begin{verbatim}
+IgnorePkg = wine vim nano
+      \end{verbatim}
+
+      Tipinis būdas naudoti Arch yra atnaujinti visus paketus, nebent
+      kažkokio paketo atnaujinimas dar nėra galimas. Tokiu atveju
+      galima pasinaudoti ABS. Daugelis vartotojų sukurti kompiliavimo
+      skriptai yra pasiekiami per AUR ir gali būti įdiegti rankiniu
+      būdu, pasitelkiant \textsl{makepkg}.
+
+      Pagrindiniai vartotojai viliasi, jog visa sistema atsinaujins
+      paprasčiausiai paleidžiant \textsl{pacman -Syu}, nenurodant kokį
+      būtent paketą atnaujinti nereikia. Tačiau kiekvienas vartotojas
+      gali būti skirtingas ir tuo labiau - kiekvieno vartotojas turi
+      savo pasirinkimo laisvę. Yra didelė tikimybė, kad įtraukus
+      kritinio paketo atnaujinimo ignoravimą, sistema gali veikti
+      nestabiliai arba visai nutraukti savo darbą. Dažniausiais,
+      blogas sistemos veikimas ir nutinka, kai vartotojai įtraukia
+      reikiamus paketus į atnaujinimo ignoravimo sąrašą. 
+
+      Paketų atnaujinimo ignoravimas yra labai suktas dalykas ir
+      pradedančiajam jo naudoti nėra patartina. 
 
     \subsection{Konfigūracinių bylų ignoravimas}
 
+      Tokiu pačiu principu galite apsaugoti ir savo konfigūracines
+      bylas nuo \textsl{pacman -Syu} atnaujinimo, naudodami
+      \textsl{NoUpgrade} argumentą \textsl{/etc/pacman.conf} byloje:
+
+      \begin{verbatim}
+NoUpgrade = boot/grub/menu.lst /etc/vimrc
+      \end{verbatim}
+
     \subsection{Supažindinimas su pacman}
+
+      % TODO: papildyti
+
+      Pacman yra geriausias Arch draugas. Labai rekomenduojama
+      išstudijuoti ir išmokti kaip veikia pacman.
+
+      \begin{verbatim}
+# man pacman
+      \end{verbatim}
 
     \section{Sistemos atnaujinimas}
 
+      Lieka labai nedaug iki pilno sistemos atnaujinimo. Tiksliau, tai
+      atlikti jau galima ir dabar:
+
+      \begin{verbatim}
+# pacman -Syu
+      \end{verbatim}
+
+      Arba:
+
+      \begin{verbatim}
+# pacman --sync --refresh --sysupgrade
+      \end{verbatim}
+
+      Dabar pacman sutikrins visų paketų versijas ir atsiųs, bei
+      įdiegs visus reikiamus paketus. Gali nutikti ir taip, kad
+      pirmiausiai pacman praneš apie savęs pačio naujesnę
+      versiją. Tokiu atveju, atnaujinkite pacman, o paskui pakartokite
+      ankstesnę komandą. 
+
+      Perkraukite sistemą, jeigu atėjo naujas sisteminis branduolys (
+      kernel ).
+
+      Pacman darbų rezultatas yra saugomas \textsl{/var/log/pacman.log}.
+
       \subsection{Arch dabartinės versijos modelis}
 
+        Verta prisiminti, jog Arch Linux remiasi dabartinės versijos
+        modeliu. Tai reiškia, jog niekas nebus reikalo diegti sistemą
+        iš naujo. Viskas paremta paprastu principu: kartą įdiegei ir
+        pamiršai. Tiesiog reikia kartais nepamiršti paleisti
+        \textsl{pacman -Syu}, sistema atsinaujins ir turėsite
+        naujausius paketus. Taip pat labai patartina perkrauti sistemą
+        keik vieną kartą, kuomet yra išleidžiamas naujas sistemos
+        branduolys ( kernel ).
