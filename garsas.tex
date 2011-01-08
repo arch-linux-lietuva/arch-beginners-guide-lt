@@ -1,0 +1,93 @@
+\chapter{Garsas}
+
+  % TODO: daugiau info, daugiau info!
+  
+  Garsui Arch Linux sistemoje apdoroti yra naudojamas ``Advanced Linux
+  Sound Architekture'' ( taip pat dar žinomas kaip ALSA ). Jis yra
+  Linux sisteminio branduolio ( kernel ) komponentas, kuris yra
+  skirtas pakeisti originalų ``Open Sound System'' ( taip pat dar
+  žinoma kaip OSS ). Be garso plokščių atpažinimo, ALSA taip pat
+  atlieka pridėtinės programinės įrangos vaidmenį, t.y. ji suteikia
+  programuotojams pagrindą aukštesnio lygio API, kuris tiesiogiai
+  sąveikauja su sisteminio branduolio ( kernel ) tvarkyklėmis.
+
+  \paragraph{Pastaba} Alsa yra įtraukta į pagrindinį Arch Linux
+  sisteminio branduolio paketą ir udev automatiškai atpažins
+  kompiuterio garso plokštę, bei užkraus reikiamą tvarkyklę/modulį į
+  sisteminį branduolį. Taip pat, garsas sistemoje jau turi veikti,
+  tiesiog pagal numatytus nustatymus visi kanalai yra užslopinti.
+
+  Garso kanalams atidaryti reikia \textsl{alsamixer} komandos, kuri
+  yra paketo \textsl{alsa-utils} dalis. Diegimui įveskite sekančią
+  komandą:
+
+  \begin{verbatim}
+# pacman -S alsa-utils
+  \end{verbatim}
+
+  Taip pat rekomenduojama diegti \textsl{alsa-oss} paketą, kuris
+  suteiks programoms, naudojančioms OSS tiltą prie ALSA:
+
+  \begin{verbatim}
+# pacman -S alsa-oss
+  \end{verbatim}
+
+  Jeigu ne-root vartotojas dar nėra įtrauktas į \textsl{audio}
+  vartotojų grupę, tai galima atlikti su \textsl{gpasswd} komanda:
+
+  \begin{verbatim}
+# gpasswd -a vartotojo-vardas audio
+  \end{verbatim}
+
+  Grupės pridėjimas yra įvykdytas, tačiau dabartinėje vartotojo
+  sesijoje, paprastas vartotojas vis dar nėra prijungtas prie
+  \textsl{audio} grupės. Tam, kad nauji nustatymai įsigaliotų, reikia
+  išsiregistruoti iš sistemos ir vėl prisiregistruoti prie sistemos.
+
+  Kaip ne-root, paprastas vartotojas įvykdykite \textsl{alsamixer}:
+
+  \begin{verbatim}
+# alsamixer
+  \end{verbatim}
+
+  Norint atidaryti tam tikrą kanalą, pirmą reikia jį įjungti,
+  paspaudžiant ``M'' raidę. Garso reguliavimas atliekamas su krypties
+  klavišais į viršų ir į apačią. Tam, kad pereiti prie kito kanalo,
+  paspauskite krypties klavišus į dešinę arba į kairę.
+
+  Dažniausiai reikia įjungti ir duoti maksimumą ``Master'' ir jo
+  analogijoms, pavyzdžiui ``Master Mono'', ``Headphone'' ir kiti,
+  kurie yra prieš ``PCM''. Su ``PCM'' galima atlikti pagrindinį
+  sistemos garso reguliavimą.
+
+    \subsection{Garso testavimas}
+
+      Garso nustatymus patikrinti galima su \textsl{aplay} komanda:
+
+      \begin{verbatim}
+# aplay /usr/share/sounds/alsa/Front_Central.wav
+      \end{verbatim}
+
+      Turėtumėt išgirsti malonų moters garsą, kuris sako ``Front,
+      center''.
+
+    \subsection{Garso nustatymų išsaugojimas}
+
+      Persijunkite prie root vartotojo ir išsaugokite visus garso
+      nustatymus, naudojant \textsl{alsactl} komanda:
+
+      \begin{verbatim}
+# alsactl -f /var/lib/alsa/asound.state store
+      \end{verbatim}
+
+      Šita komanda sukurs naują bylą, pavadinimu
+      \textsl{asound.state}, kurioje bus išsaugoti visi ALSA
+      reikalingi konfigūraciniai duomenys.
+
+      Galiausiai, reikia įtraukti alsa daemon'ą į DEAMONS
+      \textsl{/etc/rc.conf} masyvą, kad kiekvieną kartą, paleidžiant
+      sistemą, garso nustatymai atsistatytų:
+
+      \begin{verbatim}
+DAEMONS=(syslog-ng @network crond alsa)
+      \end{verbatim}
