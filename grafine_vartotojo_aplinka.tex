@@ -1,0 +1,414 @@
+\chapter{Grafinė vartotojo aplinka}
+
+  \section{Žingsnis 1: X diegimas}
+
+    \textbf{X} 11 versijos langų sistema ( taip pat žinoma kaip
+    \textbf{X11} arba tiesiog \textbf{X} ) yra tinklo ir atvaizdavimo
+    prievadas, kuris suteikia langų aplinką taškiniuose
+    vaizduokliuose. Jis turi savyje visus reikiamus įrankius grafinės
+    aplinkos ( GUI ) kūrimui.
+
+    \textbf{X} suteikia pagrindinę bazę, GUI kūrime: vietą pelytės
+    sąsajai, klaviatūrai ar kitiems įvestiems įrenginiams, operuojant
+    su langais darbastalyje. \textbf{X} nesuteikia vartotojo aplinkos
+    įgaliojimus kiekvienam langui. Tuo turi pasirūpinti pačios
+    programos. \textbf{X} nesuteikia grafinio grožio, kadangi tam
+    reikės dar vieno sluoksnio. \textbf{X} yra taip pavadintas,
+    kadangi jis kilo iš \textbf{W} langų sistemos, kurią kūrė
+    Standford'o Universitete.
+
+    \subsection{A: Xorg diegimas}
+
+      Dabar mes diegsime Xorg, naudodami pacman. Tai yra pirmas
+      žingsnis grafinės aplinkos kūrime:
+
+      \begin{verbatim}
+# pacman -S xorg
+      \end{verbatim}
+
+      3D palaikymui, reikia diegti mesa:
+
+      \begin{verbatim}
+# pacman -S mesa
+      \end{verbatim}
+
+      3D įrankiai, tokie kaip \textsl{glxgears} arba \textsl{glxinfo}
+      yra \textbf{mesa-demos} pakete:
+
+      \begin{verbatim}
+# pacman -S mesa-demos
+      \end{verbatim}
+
+    \subsection{B: Vaizdo tvarkyklės diegimas}
+
+      Toliau seka vaizdo tvarkyklės diegimas. Šiame žingsnyje
+      reikalaujama žinoti koks yra kompiuterio lustų rinkinys. Jeigu
+      tai ir nėra žinoma, tai nesunku sužinoti su \textsl{lspci}
+      programa:
+
+      \begin{verbatim}
+# lspci
+      \end{verbatim}
+
+      \paragraph{Pastaba} \textbf{lspci} programa parodo visus lustus,
+      kurie yra prijungti prie kompiuterio per PCI jungtį.
+
+      \paragraph{Pastaba} Jeigu reikiamos tvarkyklės nepavyksta rasti,
+      tuomet iš bėdos galima naudoti ir \textbf{vesa} vaizdo
+      tvarkyklę. Tačiau ji siūlo tik lėtą 2D aplinką. 
+
+      Jeigu reikia diegti atviro kodo tvarkykles, įvykdykite:
+
+      \begin{verbatim}
+# pacman -Ss xf86-video | less
+      \end{verbatim}
+
+      Arba naudokite šį atrivo kodo tvarkyklių sąrašą
+
+      \begin{itemize}
+        \item \textbf{xf86-video-apm} - Alliance ProMotion vaizdo
+          tvarkyklė
+        \item \textbf{xf86-video-ark} - ark vaizdo tvarkyklė
+        \item \textbf{xf86-video-ast} - ASPEED AST vaizdo tvarkyklė
+        \item \textbf{xf86-video-ati} - ATI(AMD) radeon vaizdo
+          tvarkyklė
+          \begin{itemize}
+            \item \textbf{xf86-video-r128} - ATI(AMD) vaizdo tvarkyklė
+              ati Rage128 vaizdo kortai
+            \item \textbf{xf86-video-mach64} - ATI(AMD) vaizdo
+              tvarkyklė mach64 vaizdo kortai
+          \end{itemize}
+        \item \textbf{xf86-video-chips} - Chips and Technologies vaizdo tvarkyklė
+        \item \textbf{xf86-video-cirrus} - Cirrus Logic vaizdo tvarkyklė
+        \item \textbf{xf86-video-dummy} - fiktyvi vaizdo tvarkyklė
+        \item \textbf{xf86-video-fbdev} - framebuffer vaizdo tvarkyklė
+        \item \textbf{xf86-video-glint} - GLINT/Permedia vaizdo tvarkyklė
+        \item \textbf{xf86-video-i128} - Number 0 i128 vaizdo tvarkyklė
+        \item \textbf{xf86-video-i740} - Intel i740 vaizdo tvarkyklė
+        \item \textbf{xf86-video-intel} - Intel i810/i830/i915/945G/G965+ vaizdo tvarkyklė
+        \item \textbf{xf86-video-mga} - Mga ( Matrox Graphics Adapter ) vaizdo tvarkyklė
+        \item \textbf{xf86-video-neomagic} - neomagic vaizdo tvarkyklė
+        \item \textbf{xf86-video-nv} - NVidia nv vaizdo tvarkyklė
+        \item \textbf{xf86-video-nouveau} - Open Source 3D
+          acceleration tvarkyklė nVidia vaizdo kortoms
+        \item \textbf{xf86-video-openchrome} - VIA/S3G UniChrome,
+          UniChrome Pro ir Chrome9 vaizdo tvarkyklė
+        \item \textbf{xf86-video-rendition} - Rendition vaizdo tvarkyklė
+        \item \textbf{xf86-video-s3} - S3 vaizdo tvarkyklė
+        \item \textbf{xf86-video-s3virge} - S3 Virge vaizdo tvarkyklė
+        \item \textbf{xf86-video-savage} - Savage vaizdo tvarkyklė
+        \item \textbf{xf86-video-siliconmotion} - Siliconmotion vaizdo tvarkyklė
+        \item \textbf{xf86-video-sis} - SiS vaizdo tvarkyklė
+        \item \textbf{xf86-video-sisusb} - SiS USB vaizdo tvarkyklė
+        \item \textbf{xf86-video-tdfx} - Tdfx vaizdo tvarkyklė
+        \item \textbf{xf86-video-trident} - Trident vaizdo tvarkyklė
+        \item \textbf{xf86-video-tseng} - Tseng vaizdo tvarkyklė
+        \item \textbf{xf86-video-unichrome} - VIA S3 Unichrome vaizdo tvarkyklė
+        \item \textbf{xf86-video-v4l} - V4l vaizdo tvarkyklė
+        \item \textbf{xf86-video-vesa} - Vesa vaizdo tvarkyklė
+        \item \textbf{xf86-video-vmware} - Vmware vaizdo tvarkyklė
+        \item \textbf{xf86-video-voodoo} - Doovoo vaizdo tvarkyklė
+        \item \textbf{xf86-video-xgi} - XGI vaizdo tvarkyklė
+        \item \textbf{xf86-video-xgixp} - XGIXP vaizdo tvarkyklė
+      \end{itemize}
+
+      Norint įdiegti vaizdo tvarkyklę, naudokite pacman, pavyzdžiui:
+
+      \begin{verbatim}
+# pacman -S xf86-video-vesa
+      \end{verbatim}
+
+      \subsubsection{NVIDIA vaizdo plokštės}
+
+        NVIDIA vartotojai turi tris pasirinkimus ( nepaisant vesa
+        tvarkyklės ):
+        
+        \begin{itemize}
+          \item Atviro kodo nouveau tvarkyklė, kuri siūlo 2D
+            greitinimą ir eksperimentinį 3D palaikymą, kuris gerai
+            tinka komponavimo ( compositing ) reikmėms, tačiau jis
+            nepalaiko tokių dalykų kaip energijos taupymas.
+          \item Atviro kodo ( tačiau klaidinantis ) nv tvarkyklė,
+            kuri yra labai lėta ir siūlo tik 2D palaikymą.
+          \item Atitinkamas nvidia tvarkykles, kurios siūlo gerą 3D
+            palaikymą, bei energijos taupymą. Jeigu yra planuose
+            naudoti atitinkamą nvidia tvarkyklę, pirmiausiai reiktų
+            pradėti nuo nouveau tvarkyklės, o tik tuomet persijungti
+            prie nvidia tvarkyklės, kadangi pastaroji veikia iškarto,
+            o nvidia reikalaus konfigūracijos ir gali kilti tam tikrų
+            problemų, kurias teks spręsti.
+        \end{itemize}
+
+        Atviro kodo nouveau yra patenkinama daugumai vartotojų ir yra
+        rekomenduojama:
+
+        \begin{verbatim}
+# pacman -S xf86-vide-nouveau
+        \end{verbatim}
+
+        3D palaikymui ( eksperimentinis ):
+        
+        \begin{verbatim}
+# pacman -S nouveau-dri
+        \end{verbatim}
+
+        Sukurkite naują \textsl{/etc/X11/xorg.conf.d/20-nouveau.conf}
+        bylą ir pridėkite sekantį turinį:
+
+        \begin{verbatim}
+Section "Device"
+  Identifier "n"
+  Driver "nouveau"
+EndSection
+        \end{verbatim}
+
+        Reikia įsitikinti, jog nouveau tvarkyklė bus pakrauta. Xorg
+        dar nėra pakankamai protingas, kad tai atliktų automatiškai.
+
+      \subsubsection{ATI vaizdo plokštės}
+
+        ATI vartotojai turi du tvarkyklių pasirinkimus ( nepaisant
+        vesa tvarkyklės ):
+
+        \begin{itemize}
+          \item Atviro kodo \textbf{radeon} tvarkyklė, kuri yra paketo
+            \textbf{xf86-video-ati} dalis. Ji pilnai palaiko visas ATI
+            kortas iki X1950 ( naujausias R500 lustų rinkinys
+            ). Kortos iki 9200 yra pilnai palaikomos, veikia
+            stabiliai ir suteikia 2D ir 3D greitinimą. Kortos nuo 9500
+            iki HD4000 suteikia pilną 2D greitinimą, ir iš dalies
+            stabilų 3D greitinimą, tačiau jai trūksta kai kurių
+            specifinių dalykų, kurias siūlo atitinkamų plokščių eilė:
+            energijos taupymas yra vis dar kuriamas ir yra
+            išplėstinėje stadijoje, tačiau jis visiškai atskiras nuo
+            catalyst. HD5000 palaikymas yra dar kūrimo
+            stadijoje. Palaiko KMS ir HDMI su garso išėjimu nuo 2.6.33
+            branduolio versijos.
+          \item Atitinkama \textbf{fglrx} tvarkyklė įtraukta į
+            catalyst paketą yra pasiekiama AUR saugykloje. Ji palaiko
+            tik naujausius įrenginius ( HD2xxx ir naujesnius
+            ). Ankščiau paketas buvo įtraukas į \textsl{extra}
+            saugyklą, tačiau 2009 kovą jo palaikymas buvo nutrauktas
+            dėl kokybės ir greičio prastumo.
+        \end{itemize}
+
+        Atviro kodo tvarkyklė yra rekomenduojamas
+        pasirinkimas:
+
+        \begin{verbatim}
+# pacman -S xf86-video-ati
+        \end{verbatim}
+    
+    \subsection{C: Įvesties ( input ) tvarkyklių diegimas}
+
+      Udev turi atlikti kompiuterio aparatinės įrangos atpažinimą, o
+      evdev ( xf86-input-evdev ) yra modernus, savaiminio atpažinimo
+      įvesties tvarkyklė beveik visiems įrenginiams, tad daugumoje
+      atveju, įvesties tvarkyklių įdiegti nereikia. Šiame žingsnyje,
+      evdev jau yra įdiegtas į kompiuterį kaip Xorg priklausomybė.
+
+      Jeigu evdev nepalaiko įrenginio, tuomet reikia diegti tvarkyklę,
+      kuri yra xorg-input-drivers grupėje.
+
+      Visiškam palaikomų įvesties tvarkyklių sąrašui įvykdykite
+      sekančią komandą:
+
+      \begin{verbatim}
+# pacman -Ss xf86-input | less
+      \end{verbatim}
+
+      \paragraph{Pastaba} Tereikia tik xf86-input-keyboard arba
+      xf86-input-mouse, jeigu planuojate nenaudoti savaiminio
+      atpažinimo.
+
+      Nešiojamų kompiuterių savininkams ( arba vartotojams su lietimu
+      jautriais ekranais ) dar reikia diegti \textsl{synaptics}
+      paketą, kuris leis \textbf{X} sukonfigūruoti jutikliniam
+      kilimėliui arba jutikliniam ekranui:
+
+      \begin{verbatim}
+# pacman -S xf86-input-synaptics
+      \end{verbatim}
+
+  \section{Žingsnis 2: X konfigūravimas ( nebūtina )}
+
+    X.org X serveris turi auto konfigūracijos galimybę. Taip pat, X
+    gali funkcionuoti ir visiškai be vartotojo nurodytos
+    konfigūracijos.
+
+    Sąrašas konfigūracinių bylų yra \textsl{/etc/X11}
+    direktorijoje. Šitame kataloge yra \textsl{xorg.conf.d} katalogas,
+    kuriame saugomi visos numatytos konfigūracinės bylos X
+    serveriui. Tai yra Arch Linux distribucijos sukurtos numatytos
+    konfigūracinės bylos, bazė vartotojų redagavimui. Taip pat lieka
+    galimybė tiesiog sukurti paprastą \textsl{/etc/X11/xorg.conf},
+    kuris bus skaitomas paskutinis, po visų \textbf{xorg.conf.d}
+    kataloge esančių konfigūracinių bylų.
+
+    \subsection{Ne-US klaviatūra}
+
+      % TODO:
+      % Papasakoti kaip galima padaryti layout switch'a
+
+      Jeigu naudosite ne standartinę US tipo klaviatūrą, reikia
+      nustatyti klaviatūros išdėstymą
+      \textsl{/etc/X11/xorg.conf.d/10-evdev.conf} byloje:
+
+      \begin{verbatim}
+Section "InputClass"
+    Identifier "evdev keyboard catchall"
+    MatchIsKeyboard "on"
+    MatchDevicePath "/dev/input/event*"
+    Driver "evdev"
+    Option "XkbLayout" "lt"
+EndSection
+      \end{verbatim}
+
+  \section{Žingsnis 3: Bazinės grafinės aplinkos paleidimas}
+
+    Šitam žingsnyje paaiškinsime kaip paleisti bazinę grafinę aplinką,
+    kuri yra įtrauka į Xorg paketą. Tokia grafinė aplinka naudoja
+    paprasčiausią langų tvarkyklę, twm. Numatyta X aplinka yra labai
+    primityvi, tačiau greitu metu diegsime geresnę langų tvarkykle.
+
+    Kadangi Xorg diegimas jau pabaigtas, paprasto vartotojo namų
+    kataloge turi būti konfigūracinė byla \textsl{.xinitrc}. Šiame
+    žingsnyje bylą reikia ištrinti. Jeigu bylos nepašalinsite, vietoj
+    tikėtinos langų tvarkyklės bus rodomas tik juodas ekranas, o
+    \textsl{Xorg.0.log} nieko nerodys. Paprasčiausiai pašalinkite šitą
+    bylą, kad pasiekti numatytą langų tvarkyklę:
+
+    \begin{verbatim}
+# rm ~/.xinitrc
+    \end{verbatim}
+
+    \subsection{Pranešimų magistralė}
+
+      Dbus yra reikalaujamas daugelių programų stabiliam
+      veikimui. Jeigu žinote, jog jis reikalingas nebus - praleiskite
+      sekančią sekciją.
+
+      \subsubsection{Diegimas}
+
+        Dbus diegiamas su pacman pagalba:
+
+        \begin{verbatim}
+# pacman -S dbus
+        \end{verbatim}
+
+      \subsubsection{Deamon paleidimas}
+
+      Reikia pridėti \textbf{dbus} į DEAMONS masyvą
+      \textsl{/etc/rc.conf} byloje:
+
+      \begin{verbatim}
+DEAMONS=(syslog-ng dbus @network crond alsa)
+      \end{verbatim}
+      
+      Jeigu norite paleisti dbus neperkraunant sistemos:
+
+      \begin{verbatim}
+# /etc/rc.d/dbus start
+      \end{verbatim}
+
+    \subsection{X paleidimas}
+
+      Galiausiai, galime leisti Xorg:
+
+      \begin{verbatim}
+# startx
+      \end{verbatim}
+
+      Arba:
+
+      \begin{verbatim}
+# xinit -- /usr/bin/X -nolisten tcp
+      \end{verbatim}
+
+      Jeigu monitorius rodo tik juodą ekraną, tai dar nėra
+      bėda. Galite persijungti prie kitos konsolės ( pavyzdžiui
+      CTRL+ALT+F2 ) ir prisijungti kaip root.
+
+      Galite pabandyti užmušti X serverį su \textsl{/usr/bin/pkill}:
+
+      \begin{verbatim}
+# pkill X
+      \end{verbatim}
+
+      \paragraph{Pastaba} X raidė turi būti didžioji.
+
+      Jeigu pkill nesuveiks, tai galima aklai perkrauti kompiuterį:
+
+      \begin{verbatim}
+# reboot
+      \end{verbatim}
+
+      Arba:
+      
+      \begin{verbatim}
+# init 6
+      \end{verbatim}
+
+    \subsection{Klaidų atveju}
+
+      Jeigu kyla kažkokia problema, klaidos pranešimo ieškokite
+      \textsl{/etc/log/Xorg.0.log} byloje. Ieškokite eilučių, kurios
+      prasideda \textsl{EE}, kas reiškia klaida, bei kurios prasideda
+      \textsl{WW}, kas reiškia perspėjimas.
+
+      \begin{verbatim}
+# grep EE /var/log/Xorg.0.log
+      \end{verbatim}
+
+      Klaidos taip pat rodomos konsolėje, iš kurios buvo leidžiamas \textsl{X}.
+
+    \subsection{Reikia pagalbos?}
+
+      Jeigu kyla problemos, kurių išspręsti dar negalite, galite
+      kreiptis į forumus:
+
+      \begin{itemize}
+        \item http://sls.archlinux.lt - Arch Linux Lietuva forumas
+        \item http://bbs.archlinux.org - Oficialus Arch Linux forumas
+      \end{itemize}
+
+      Taip pat įsitikinkite, jog turite wgetpaste paketą:
+
+      \begin{verbatim}
+# pacman -S wgetpaste
+      \end{verbatim}
+
+      Naudodami įrankį, pateikite forume tokių bylų tekstus:
+
+      \begin{itemize}
+        \item ~/.xinitrc
+        \item /etc/X11/xorg.conf
+        \item /var/log/Xorg.0.log
+        \item /var/log/Xorg.0.log.old
+      \end{itemize}
+
+      Wgetpaste naudoti yra labai paprasta:
+
+      \begin{verbatim}
+# wgetpaste /absoliutus/kelias/iki/bylos        
+      \end{verbatim}
+
+  \section{Žingsnis 4: Šriftų diegimas}
+
+  \section{Žingsnis 5: Grafinės aplinkos pasirinkimas ir diegimas}
+
+    \subsection{Darbastalio aplinka}
+
+    \subsection{Langų tvarkyklės}
+
+  \section{Grafinės aplinkos paleidimo metodai}
+
+    \subsection{A: Rankinis}
+
+      \subsubsection{Metodas 1: Specifinės GA komandos}
+
+      \subsubsection{Metodas 2: Naudojant runlevels}
+
+      \subsubsection{Metodas 3: Naudojant .xinitrc}
+
+    \subsection{B: Automatinis}
