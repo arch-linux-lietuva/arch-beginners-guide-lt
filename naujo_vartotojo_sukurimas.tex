@@ -1,1 +1,167 @@
 \chapter{Naujo vartotojo sukūrimas}
+
+  Linux yra daugelio naudotojų sistema. Tikrai nereikia naudoti root
+  vartotojo kasdieniams darbams. Tai labai bloga praktika ir tai labai
+  pavojinga. Root vartotojas yra skirtas tik Linux sistemos
+  administravimo darbams. Jis tikrai nėra skirtas programuoti ar
+  rašyti kursinius darbus.
+
+  Rekomenduojama sukurti naują, paprastą, ne root tipo vartotoją,
+  pasitelkiant \textsl{/usr/sbin/useradd} programą. 
+
+  \begin{verbatim}
+# useradd -m -g [pradine_grupe] -G [papildomos_grupes] -s
+    [prisijungimo_kiautas] [vartotojo_vardas]
+  \end{verbatim}
+
+  \begin{itemize}
+    \item \textbf{-m} argumentas pasako programai sukurti naują namų
+      direktoriją vartotojui \textsl{/home/vartotojo$\_$vardas}. Savo
+      direktorijoje vartotojas turi tiek rašymo, tiek skaitymo
+      teises. Vartotojas savo direktorijoje gali net diegti
+      programas. Taip pat tokioje direktorijoje yra saugomi visos
+      vartotojų konfigūracinės bylos, taip vadinamos 'taškinės bylos' (
+      jų pavadinimas prasideda tašku, kaip pavyzdžiui \textsl{.vimrc}
+      ). Jos yra 'paslėptos'. Pagal numatytus nustatymus \textbf{ls}
+      jų nerodo. Tam, kad jas pamatyti reikia prie komandos pridėti
+      \textsl{-a} argumentą. Kuomet kyla konfliktas su vartotojo
+      konfigūracinėmis bylomis ir globaliomis konfigūracinėmis bylomis
+      - vartotojo konfigūracinės bylos lieka dominuojančioje
+      pozicijoje. Dažniausios taškinės bylos, kurios yra keičiamos
+      vartotojo namų direktorijoje yra \textsl{.xinitrc} ir
+      \textsl{.bashrc}. Sekančios konfigūracinės bylos atsakingos už
+      xinit ir Bash atitinkamai. Šios konfigūracinės bylos leidžia
+      vartotojui keisti langų tvarkyklę, kuri pasirodo po prisijungimo
+      lango, alternatyvius vardus, vartotojo sukurtas komandas, bei
+      aplinkos kintamuosius atitinkamai. Kuomet yra sukuriamas naujas
+      vartotojas, visos jo taškinės bylos, kaip konfigūracijų
+      pagrindas, yra imamos iš \textsl{/etc/skel} direktorijos. 
+    \item \textbf{-g} argumentas nusako prie kokios grupės priskirti
+      vartotoją iškarto po prisijungimo prie sistemos. Grupės vardas
+      turi egzistuoti. Jeigu vietoj grupės vardo yra nurodomas grupės
+      numeris, jis turi nurodyti į egzistuojančią grupę. Jeigu
+      parametras nėra nurodomas, useradd programos veiksmai priklausys
+      nuo \textsl{USERGROUPS$\_$ENAB} kintamojo, kuris yra aprašytas
+      \textsl{/etc/login.defs}.
+    \item \textbf{-G} argumentas nusako prie kokių grupių priskirti
+      vartotoją. Kiekviena grupė yra pateikiama eilute, grupės
+      atskiriamos kablelių, tarpų būti negali. Pagal numatytus
+      nustatymus, vartotojas priklauso tik tai grupei, kuri yra
+      nusakyta \textsl{-g} argumentu.
+    \item \textbf{-s} argumentas nusako absoliutų kelią ir pavadinimą
+      numatyto prisijungimo kiauto. Arch Linux init skriptai naudoja
+      Bash kiautą. Po sistemos krovimo, vartotojas bus perkeltas prie
+      jo nurodyto kiauto. Verta įsitikinti, kad vartotojo nurodytas
+      kiautas egzistuoja sistemoje.
+  \end{itemize}
+
+  Naudingos vartotojų grupės:
+
+  \begin{itemize}
+    \item \textbf{audio} - garso reikmėms
+    \item \textbf{floppy} - diskelių reikmėms
+    \item \textbf{lp} - spausdinimo reikmėms
+    \item \textbf{optical} - lokalaus optinio diskinio įrenginio
+      reikmėms
+    \item \textbf{storage} - laikmenų reikmėms
+    \item \textbf{video} - vaizdo, bei sistemos greitinimo reikmėms
+    \item \textbf{wheel} - naudojant sudo
+    \item \textbf{games} - esant būtinybei turėti rašymo teises
+      žaidimams
+    \item \textbf{power} - kompiuterio energijos reikmėms (
+      išjungimas, perkrovimas )
+    \item \textbf{scanner} - skaitytuvo reikmėms
+  \end{itemize}
+
+  Tipinio vartotojo sukūrimo komanda atrodytų taip:
+
+  \begin{verbatim}
+# useradd -m -g users \
+    -G audio,lp,optical,storage,video,wheel,games,power,scanner \
+    -s /bin/bash avartotojas
+  \end{verbatim}
+
+  Toliau, reikia sukurti slaptažodį naujam vartotojui, naudojant
+  \textsl{passwd} komandą:
+
+  \begin{verbatim}
+# passwd avartotojas
+  \end{verbatim}
+
+  Dabar, naujas ne-root vartotojas jau yra pilnai sukurtas. Galite
+  atsijungti iš root vartotojo su \textsl{logout} ir prisijungti kaip
+  ne-root vartotojas.
+
+    \subsection{Vartotojo pašalinimas}
+
+      % TODO
+    
+      Jeigu nutinka kažkokia klaida, arba yra būtinybė pakeisti
+      vartotojo prisijungimo vardą, arba dėl kitos priežastis, galima
+      labai lengvai pašalinti sistemos vartotoją su \textsl{userdel}:
+      
+      \begin{verbatim}
+# userdel -r [vartotojo-vardas]
+      \end{verbatim}
+
+      \begin{itemize}
+        \item \textbf{-r} argumentas pasako programai pašalinti visas su
+          vartotoju susietas bylas ir direktorijas: jo namų direktorija,
+          su visomis bylomis, bei elektroninio pašto vietą.
+      \end{itemize}
+
+  \section{Sudo diegimas ir konfigūravimas ( nebūtina )}
+
+    % TODO
+
+    Sudo diegimas su pacman yra labai paprastas:
+    
+    \begin{verbatim}
+# pacman -S sudo
+    \end{verbatim}
+
+    Norint pridėti ne-root vartotoją prie sudo vartotojų grupės,
+    pirmiausiai reikia sukonfigūruoti sudo konfigūracinę bylą. Tai
+    galima padaryti su \textsl{visudo} komanda, paleidžiant ją su root
+    vartotojo teisėmis. 
+
+    Pagal numatytus nustatymus, visudo komanda naudos \textsl{vi}
+    teksto redaktorių. Jeigu nežinote kaip naudotis tokiu teksto
+    redaktoriumi, patartina pasirinkti kitą. Kitą redaktorių galima
+    nustatyti pakoreguojant \textsl{EDITOR} aplinkos kintamąjį (
+    pavyzdyje naudosime nano ):
+
+    \begin{verbatim}
+# EDITOR=nano visudo
+    \end{verbatim}
+
+    \pagargraph{Pastaba} Reikia įsidėmėti, jog kintamojo deklaravimas
+    bei visudo komandos paleidimas vykdomas vienu metu, per vieną
+    eilutę. Jeigu komandas parašyti atskirai, t.y. per dvi eilutes -
+    niekas nesuveiks. 
+
+    Visodo komanda turi atidaryti \textsl{/etc/sudoers} konfigūracinę
+    bylą.  Pastaroji komanda neredaguoja bylos tiesiogiai. Ji
+    perkopijuoja konfigūracinę bylą į laikiną saugyklą ( tmp ) ir
+    atidaro vartotojui redagavimo aplinką ( vi arba kitą redaktorių,
+    kuris yra nustatomas per \textsl{EDITOR} kintamąjį ). Tuomet, kai
+    redagavimas yra baigiamas - \textsl{/etc/sudoers} laikinoji byla
+    yra sutikrinama ir, jeigu konfigūracinis formatas yra teisingas -
+    perrašo pradinę bylą.
+
+    \paragraph{Perspėjimas} Tiesioginis \textsl{/etc/sudoers} bylos
+    redagavimas yra griežtai nerekomenduojamas. Formato klaidos gali
+    privesti iki to, jog negalima bus niekaip pasiekti root vartotojo.
+
+    Ankščiau mes pridėjome mūsų naujai sukurtą ne-root vartotoją prie
+    ``wheel'' grupės. Dabar tereikia pasakyti sudo, kad visi
+    vartotojai, kurie yra ``wheel'' grupėje gali operuoti sistemoje ir
+    su root teisėmis, kuomet yra vykdoma \textsl{sudo} komanda. Tam
+    tereikia atkomentuoti tokią eilutę:
+
+    \begin{verbatim}
+%wheel ALL=(ALL) ALL
+    \end{verbatim}
+
+    Dabar, jeigu kursite naujus vartotojus, jums tereikės juos pridėti
+    prie ``wheel'' grupės ir jie galės naudotis root vartotojo teisėmis.
