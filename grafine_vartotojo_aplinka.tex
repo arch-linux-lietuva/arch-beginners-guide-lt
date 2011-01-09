@@ -395,20 +395,235 @@ DEAMONS=(syslog-ng dbus @network crond alsa)
 
   \section{Žingsnis 4: Šriftų diegimas}
 
+    Šiuo metu yra gerai išsaugoti savo laiką ir iškarto diegti
+    šriftus. Dejavu yra didelės raiškos ir universalių šriftų
+    rinkinys:
+
+    \begin{verbatim}
+# pacman -S ttf-dejavu
+    \end{verbatim}
+
   \section{Žingsnis 5: Grafinės aplinkos pasirinkimas ir diegimas}
+
+    X langų sistema suteikia pagrindą grafinės vartotojo aplinkos
+    sukūrimui ( GUI ). Langų sistema kontroliuoja vietą, kurioje
+    atsiranda langai, bei jų išvaizdą. Darbalaukio aplinka ( DE ),
+    veikia virš ir su X, suteikdama visiškai funkcinę ir dinamišką
+    GUI. Paprastai DE suteikia langų tvarkyklę, ikonas, programėles,
+    langus, mygtukų juostas, katalogus, darbalaukio fonus, bei
+    pagrindines funkcijas kaip vilkimas.
+
+    Kaip alternatyva DE, galite pasirinkti bet kokią langų tvarkyklę
+    ir išsirinkti savo programų rinkinį. 
+
+    \paragraph{Pastaba} Daugumos distribucijų nusprendžia už vartotoją
+    kokia darbalaukio aplinka pasirinkti. Arch Linux šitą pasirinkimą
+    palieka vartotojui. Darbalaukio aplinkos ar/ir langų tvarkyklės
+    pasirinkimas yra asmeninis bei skonio reikalas. Pasirinkite
+    geriausiai tinkantį sprendimą pagal esamą poreikį. Rekomenduojama
+    pabandyti visas galimas darbalaukio aplinkas ar/ir langų
+    tvarkykles ir išsirinkti tą, kuri yra arčiausiai širdies.
 
     \subsection{Darbastalio aplinka}
 
+      % TODO
+
     \subsection{Langų tvarkyklės}
+
+      % TODO
 
   \section{Grafinės aplinkos paleidimo metodai}
 
     \subsection{A: Rankinis}
 
+      Turbūt geriausias sprendimas yra leisti X rankiniu būdu, negu
+      iškarti šokti prie darbastalio. Jeigu tai yra nepriimtina -
+      šokite prie sekančio skyriaus ``B: Automatinis''. Yra trys
+      galimi rankiniu būdu paleisti X būdai. Pasirinkite tą, kuris yra
+      labiausiai tinkamas:
+
       \subsubsection{Metodas 1: Specifinės GA komandos}
+
+        Kai kuriems vartotojams šis metodas yra paprasčiausias,
+        kadangi užtenka tik vienos komandos grafinės aplinkos
+        paleidimui. Paprasčiausiai pasinaudokite komanda, kuri
+        paleidžia tam tikrą darbalaukio aplinką arba langų
+        tvarkyklę. Komandą pradėkite su \textsl{xinit} arba
+        \textsl{startx} o toliau nurodykite kokią darbo aplinką
+        paleisti:
+
+        \begin{verbatim}
+# xinit /usr/bin/gnome-session
+        \end{verbatim}
+
+        Arba:
+
+        \begin{verbatim}
+# startx /usr/bin/startkde
+        \end{verbatim}
+
+        \paragraph{Pastaba} Sekančios komandos baigia savo vykdymą tik
+        tuomet, kai bus įvykdytas išregistravimas iš darbalaukio
+        aplinkos.
+
+        \paragraph{Pastaba} Naudokite pilną kelią iki darbalaukio
+        aplinkos/langų tvarkyklės. Jeigu, pavyzdžiui, paleisite gnome
+        kaip \textsl{xinit gnome-session}, gali kilti tam tikrų
+        problemų.
+
+        Kaip alternatyvą ilgam komandos rašymui, galima sukurti
+        alternatyvų vardą \textsl{/etc/bash.bashrc} byloje:
+
+        \begin{verbatim}
+...
+alias launch_gnome="xinit /usr/bin/gnome-session"
+alias launch_kde="xinit /usr/bin/startkde"
+alias launch_openbox="xinit /usr/bin/openbox-session"
+...
+        \end{verbatim}
+
+        Tokiu atveju, tereiks surinkti \textsl{launch$\_$gnome}
+        terminale ir pasileis gnome darbastalio aplinka.
+
+        Dar galima naudoti prisijungimo vadovą, kuriame galima
+        pasirinkti kokią darbastalio aplinką paleisti. Jeigu turite
+        gnome, tai jo prisijungimo vadovas yra gdm:
+
+        \begin{verbatim}
+# gdm
+        \end{verbatim}
 
       \subsubsection{Metodas 2: Naudojant runlevels}
 
+        Pagal numatytus nustatymus, Linux yra keli skirtingi
+        runlevels. Arch kraunasi į trečią runlevel. Penktas runlevel
+        naudojamas Linux X serverio krovimui. Pakoreguokite savo
+        \textsl{/etc/inittab}. Paskutinėje sekcijoje, bylos pabaigoje
+        atkomentuokite atitinkamą eilutę savo darbastalio aplinkos
+        programai. Jeigu naudojate gnome, tai būtų:
+
+        \begin{verbatim}
+# Example lines for starting a login manager
+#x:5:respawn:/usr/bin/xdm -nodaemon
+x:5:respawn:/usr/sbin/gdm -nodaemon
+#x:5:respawn:/usr/bin/kdm -nodaemon
+#x:5:respawn:/usr/bin/slim >/dev/null 2>&1
+        \end{verbatim}
+
+        Dabar tiesiog paleiskite savo darbastalio programą:
+
+        \begin{verbatim}
+# init 5
+        \end{verbatim}
+
       \subsubsection{Metodas 3: Naudojant .xinitrc}
 
+        Šitas metodas reikalauja daugiausiai
+        konfigūravimo. Pirmiausiai reikia sukonfigūruoti
+        \textsl{~/.xinitrc}. Pagrindinė šios bylos paskirtis yra
+        nurodyti X langų serveriui ką daryti per
+        \textsl{/usr/bin/startx} arba \textsl{/usr/bin/xinit}
+        kiekvieno vartotojo asmeniniam pasirinkimui. Yra begalės
+        konfigūracinių ypatybių, kurias galite įrašyti į savo
+        \textsl{~/.xinitrc}.
+
+        \textsl{Startx} ar \textsl{xinit } paleis X serverį, bei jo
+        klientą. Nuspręsti, kokį klientą paleisti, \textsl{startx}/\textsl{xinit}
+        pirmiausiai žiūrės į \textsl{~/.xinit}, kuris yra vartotojo
+        namų kataloge. Jeigu sekančios bylos nėra, komandos žiūri į
+        numatytą konfigūracinę bylą \textsl{xinit}, kuri yra
+        \textsl{/etc/X11/xinit/xinitrc}, kuri sukonfigūruota paleisti
+        TWM langų tvarkyklę.
+
+        \begin{itemize}
+
+          \item Persijunkite į paprastą, ne-root vartotoją:
+
+            \begin{verbatim}
+# su - vartotojo-vardas
+            \end{verbatim}
+            
+
+          \item Kaip šabloną, savo konfigūracijoms, galima naudoti
+            \textsl{/etc/skel/} kataloge esantį
+            \textsl{.xinitrc}. Pavadinimas \textsl{skel} yra žodžio
+            \textsl{skeleton} trumpinys. Nukopijuokite bylą iš
+            katalogo į savo namų direktoriją:
+
+            \begin{verbatim}
+# cp /etc/skel/.xinitrc ~/
+            \end{verbatim}
+
+          \item Atsidarykite bylą:
+
+            \begin{verbatim}
+# nano ~/.xinitrc
+            \end{verbatim}
+
+            Ir atkomentuokite eilutę, kuri nusako naudojama
+            darbalaukio aplinkos programą. Jeigu naudosite gnome, tai
+            konfigūracinė byla turi atrodyti panašiai:
+
+            \begin{verbatim}
+#!/bin/sh
+#
+# ~/.xinitrc
+#
+# Executed by startx (run your window manager from here)
+
+exec gnome-session
+# exec startkde
+# exec startxfce4
+# exec wmaker
+# exec icewm
+# exec blackbox
+# exec fluxbox
+# exec openbox-session
+# ...or the Window Manager of your choice
+# exec xterm
+            \end{verbatim}
+
+            \paragraph{Pastaba} Įsitikinkite, jog atkomentavote tik
+            \textbf{vieną} eilutę.
+
+        \end{itemize}
+
+        Dabar viskas yra paruošta X serverio paleidimui. Paleiskite
+        \textbf{X} kaip paprastas, ne-root vartotojas:
+
+        \begin{verbatim}
+# startx
+        \end{verbatim}
+        
+        Arba:
+
+        \begin{verbatim}
+# xinit
+        \end{verbatim}
+
+        Dabar darbalaukio aplinka turėtų sėkmingai pasirodyti
+        ekrane. Patikrinkite kaip veikia klaviatūra, pelytė.
+
+        Jeigu kyla problemų su automatiniu įrengimu ( automount ),
+        pabandykite savo \textsl{~/.xinitrc} tarp \textsl{exec} ir
+        darbalaukio aplinkos komandos įterpti
+        \textsl{ck-launch-session}. Pavyzdžiui:
+
+        \begin{verbatim}
+exec ck-launch-session gnome-session
+        \end{verbatim}
+
+        Tai užtikrins globalių kintamųjų priskyrimą, kai paleisite
+        darbalaukio aplinkos programą. Komanda
+        \textsl{Ck-launch-session} išvalo \textsl{consolekit}
+        sesiją. Consolekit yra programinis pagrindas, kuris yra
+        atsakingas už įvairius vartotojus, sesijas. Jis suteikia
+        programinei įrangai mechanizmą, kuris leidžia programoms
+        pasiekti visus reikiamus kintamuosius. Jis dirba kartu su dbus
+        ir kitais įrankiais.
+
     \subsection{B: Automatinis}
+
+      Daugelis vartotojų gali pasirinkti automatinį grafinės aplinkos
+      pakrovimą. Apie tai dar reiks parašyti, kadangi Pradžiamokslių
+      vadove to nėra..
